@@ -1,15 +1,19 @@
-import { DragEvent, useState } from "react";
-import useStore, { TodoProps } from "../store";
-import { AiOutlineEdit, AiOutlineCheck } from "react-icons/ai";
+import { useRef, useState } from "react";
+import { AiOutlineCheck, AiOutlineEdit } from "react-icons/ai";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
+import useStore, { TodoProps } from "../store";
 import TextareaAutosize from "react-textarea-autosize";
 
 const Todo = ({ todos }: { todos: TodoProps[] }) => {
-  const { deleteTodo, updateTodo, updateStatus, setDraggedTodo } = useStore();
+  const { deleteTodo, updateTodo, setDraggedTodo } = useStore();
   const [editingTodo, setEditingTodo] = useState<TodoProps | null>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null); // Create a ref for the textarea
 
   const handleEdit = (todo: TodoProps) => {
+    if (inputRef.current) {
+      inputRef.current.focus(); // Focus on the textarea
+    }
     setEditingTodo(todo);
   };
 
@@ -24,92 +28,74 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
     setEditingTodo(null);
   };
 
-  const handleDragStart = (
-    event: DragEvent<HTMLLIElement>,
-    todo: TodoProps
-  ) => {
-    event.dataTransfer.setData("text/plain", todo.id);
-    setDraggedTodo(todo.id);
-  };
-
-  const handleDragOver = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-  };
-
-  const handleDrop = (
-    event: DragEvent<HTMLLIElement>,
-    targetTodo: TodoProps
-  ) => {
-    const draggedTodoId = event.dataTransfer.getData("text");
-    if (draggedTodoId !== targetTodo.id) {
-      updateStatus(draggedTodoId, targetTodo.id);
+  const handleCancelOutsideTextarea = () => {
+    // Check if the textarea is being edited and there's a reference to the textarea
+    if (editingTodo && editingTodo.id !== undefined && inputRef.current) {
+      // Check if the active element is not the textarea itself
+      if (document.activeElement !== inputRef.current) {
+        updateTodo(editingTodo.id, editingTodo.text);
+        setEditingTodo(null);
+      }
     }
-    setDraggedTodo(null);
   };
 
   return (
-    <div className="cursor-pointer">
-      <div className="">
-        <ul>
-          {todos.map((todo) => (
-            <li
-              key={todo.id}
-              draggable
-              onDragStart={(event) => handleDragStart(event, todo)}
-              onDragOver={handleDragOver}
-              onDrop={(event) => handleDrop(event, todo)}
-            >
-              <div className="flex flex-col w-full mb-2 bg-white p-1 rounded-md">
-                <div>
-                  <TextareaAutosize
-                    className={`py-2 px-4 rounded-lg w-full resize-none   hover:bg-gray-200  ${
-                      editingTodo && editingTodo.id === todo.id
-                        ? " bg-white border-none"
-                        : " bg-gray-100"
-                    } `}
-                    value={
-                      editingTodo && editingTodo.id === todo.id
-                        ? editingTodo.text
-                        : todo.text
-                    }
-                    onChange={(event) =>
-                      setEditingTodo({
-                        ...todo,
-                        text: event.target.value,
-                      })
-                    }
-                    onClick={() => handleEdit(todo)}
-                  />
-                </div>
+    <>
+      {todos.map((todo) => (
+        <div
+          className="flex flex-col w-full mb-2 bg-white p-1 rounded-md cursor-grab shadow-md"
+          key={todo.id}
+          draggable
+          onDragStart={() => setDraggedTodo(todo.id)}
+        >
+          <div>
+            <TextareaAutosize
+              ref={inputRef}
+              className={`py-2 px-4 rounded-lg w-full resize-none hover:bg-gray-200  ${
+                editingTodo && editingTodo.id === todo.id
+                  ? " bg-white border-none"
+                  : " "
+              } `}
+              value={
+                editingTodo && editingTodo.id === todo.id
+                  ? editingTodo.text
+                  : todo.text
+              }
+              onChange={(event) =>
+                setEditingTodo({
+                  ...todo,
+                  text: event.target.value,
+                })
+              }
+              onBlur={handleCancelOutsideTextarea} // Set the onBlur event here
+            />
+          </div>
 
-                <div className="flex justify-end text-lg">
-                  {editingTodo && editingTodo.id === todo.id ? (
-                    <>
-                      <AiOutlineCheck
-                        onClick={handleSave}
-                        className="text-green-600 mr-1"
-                      />
-                      <FcCancel onClick={handleCancel} />
-                    </>
-                  ) : (
-                    <>
-                      <AiOutlineEdit
-                        onClick={() => handleEdit(todo)}
-                        className="text-green-600 mr-1"
-                      />
-                      <BsFillTrash3Fill
-                        onClick={() => deleteTodo(todo.id)}
-                        className="text-red-500 mr-1 "
-                      />
-                    </>
-                  )}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+          <div className="flex justify-end text-lg">
+            {editingTodo && editingTodo.id === todo.id ? (
+              <>
+                <AiOutlineCheck
+                  onMouseDown={handleSave} // Use onMouseDown instead of onClick
+                  className="text-green-600 mr-1"
+                />
+                <FcCancel onMouseDown={handleCancel} />
+              </>
+            ) : (
+              <>
+                <AiOutlineEdit
+                  onClick={() => handleEdit(todo)}
+                  className="text-green-600 mr-1"
+                />
+                <BsFillTrash3Fill
+                  onClick={() => deleteTodo(todo.id)}
+                  className="text-red-500 mr-1"
+                />
+              </>
+            )}
+          </div>
+        </div>
+      ))}
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 // Column.tsx
 import { shallow } from "zustand/shallow";
-import useStore, { TodoProps } from "../store";
+import useStore from "../store";
 import AddTodo from "./AddTodo";
 import Todo from "./Todo";
 interface ColumnProps {
@@ -16,7 +16,7 @@ function Column({ status }: ColumnProps) {
 
   return (
     <div
-      className="Column min-w-[20rem] max-w-[20rem] bg-gray-200 p-5 mr-2"
+      className="Column min-w-[20rem] max-w-[20rem] bg-gray-200 p-5 mr-2 rounded-md"
       onDragOver={(e) => {
         e.preventDefault();
       }}
@@ -27,7 +27,7 @@ function Column({ status }: ColumnProps) {
         }
       }}
     >
-      <h1>{status}</h1>
+      <h1 className="mb-2 p-2">{status}</h1>
       {status === "Todo" ? <AddTodo /> : null}
       <Todo todos={todos} />
     </div>
