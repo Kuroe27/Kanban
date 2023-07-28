@@ -2,9 +2,26 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { v4 as uuidv4 } from 'uuid';
 
-const useStore = create(devtools((set) => ({
+type Todo = {
+  id: string, 
+  text: string,
+  status: string
+}
+
+interface TodoStore {
+  todos: Todo[] | [],
+  draggedTodo: string | null,
+  addTodo: (text: string) => void
+  deleteTodo: (id: string) => void
+  updateTodo: (id: string, newText: string) => void
+  setDraggedTodo: (id: string) => void
+  updateStatus: (draggedId: string, targetId: string) => void
+}
+
+
+const useStore = create<TodoStore>()(devtools((set) => ({
   todos: [{
-    id: uuidv4(), // Assign a unique ID to the initial todo
+    id: uuidv4(), 
     text: "ads",
     status: "Done",
   }],
@@ -26,13 +43,20 @@ const useStore = create(devtools((set) => ({
       ),
     }), false, "updated");
   },
-  setDraggedTodo: (id) => set({ draggedTodo: id }), // Update draggedTodo with the todo's id
-  updateStatus: (id, status) => {
-    set((state) => ({
-      todos: state.todos.map((todo) => 
-        todo.id === id ? { ...todo, status} : todo
-      ),
-    }), false, "status updated");
+  setDraggedTodo: (id) => set({ draggedTodo: id }), 
+  updateStatus: (draggedId, targetId) => {
+    set((state) => {
+      const todos = [...state.todos];
+      const draggedIndex = todos.findIndex((todo) => todo.id === draggedId);
+      const targetIndex = todos.findIndex((todo) => todo.id === targetId);
+
+      if (draggedIndex !== -1 && targetIndex !== -1) {
+        // Swap the todos in the array
+        [todos[draggedIndex], todos[targetIndex]] = [todos[targetIndex], todos[draggedIndex]];
+      }
+
+      return { todos };
+    }, false, "status updated");
   }
 })));
 
