@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import useStore from "../store";
 
 const AddTodo = () => {
   const { addTodo } = useStore();
   const [newTodo, setNewTodo] = useState("");
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setNewTodo(event.target.value);
   };
 

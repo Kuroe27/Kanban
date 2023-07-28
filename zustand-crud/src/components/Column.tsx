@@ -1,9 +1,13 @@
+// Column.tsx
 import { shallow } from "zustand/shallow";
-import useStore from "../store";
+import useStore, { TodoProps } from "../store";
 import AddTodo from "./AddTodo";
 import Todo from "./Todo";
+interface ColumnProps {
+  status: string;
+}
 
-function Column({ status }) {
+function Column({ status }: ColumnProps) {
   const todos = useStore(
     (state) => state.todos.filter((todo) => todo.status === status),
     shallow
@@ -16,9 +20,11 @@ function Column({ status }) {
       onDragOver={(e) => {
         e.preventDefault();
       }}
-      onDrop={(e) => {
-        updateStatus(draggedTodo, status);
-        setDraggedTodo(null);
+      onDrop={(_e) => {
+        if (draggedTodo !== null) {
+          updateStatus(draggedTodo, status);
+          setDraggedTodo(null);
+        }
       }}
     >
       <h1>{status}</h1>

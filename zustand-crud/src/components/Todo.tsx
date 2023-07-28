@@ -1,36 +1,45 @@
-import { useState } from "react";
-import useStore from "../store";
+import { DragEvent, useState } from "react";
+import useStore, { TodoProps } from "../store";
 import { AiOutlineEdit, AiOutlineCheck } from "react-icons/ai";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
 import TextareaAutosize from "react-textarea-autosize";
-const Todo = ({ todos }) => {
-  const { deleteTodo, updateTodo, updateStatus, setDraggedTodo } = useStore();
-  const [editingTodo, setEditingTodo] = useState({});
 
-  const handleEdit = (todo) => {
-    setEditingTodo({ id: todo.id, text: todo.text });
+const Todo = ({ todos }: { todos: TodoProps[] }) => {
+  const { deleteTodo, updateTodo, updateStatus, setDraggedTodo } = useStore();
+  const [editingTodo, setEditingTodo] = useState<TodoProps | null>(null);
+
+  const handleEdit = (todo: TodoProps) => {
+    setEditingTodo(todo);
   };
 
   const handleSave = () => {
-    updateTodo(editingTodo.id, editingTodo.text);
-    setEditingTodo({});
+    if (editingTodo && editingTodo.id !== undefined) {
+      updateTodo(editingTodo.id, editingTodo.text);
+      setEditingTodo(null);
+    }
   };
 
   const handleCancel = () => {
-    setEditingTodo({});
+    setEditingTodo(null);
   };
 
-  const handleDragStart = (event, todo) => {
+  const handleDragStart = (
+    event: DragEvent<HTMLLIElement>,
+    todo: TodoProps
+  ) => {
     event.dataTransfer.setData("text/plain", todo.id);
     setDraggedTodo(todo.id);
   };
 
-  const handleDragOver = (event) => {
+  const handleDragOver = (event: { preventDefault: () => void }) => {
     event.preventDefault();
   };
 
-  const handleDrop = (event, targetTodo) => {
+  const handleDrop = (
+    event: DragEvent<HTMLLIElement>,
+    targetTodo: TodoProps
+  ) => {
     const draggedTodoId = event.dataTransfer.getData("text");
     if (draggedTodoId !== targetTodo.id) {
       updateStatus(draggedTodoId, targetTodo.id);
@@ -54,15 +63,18 @@ const Todo = ({ todos }) => {
                 <div>
                   <TextareaAutosize
                     className={`py-2 px-4 rounded-lg w-full resize-none   hover:bg-gray-200  ${
-                      editingTodo ? " bg-white border-none" : " bg-gray-100"
+                      editingTodo && editingTodo.id === todo.id
+                        ? " bg-white border-none"
+                        : " bg-gray-100"
                     } `}
-                    type="text"
                     value={
-                      editingTodo.id === todo.id ? editingTodo.text : todo.text
+                      editingTodo && editingTodo.id === todo.id
+                        ? editingTodo.text
+                        : todo.text
                     }
                     onChange={(event) =>
                       setEditingTodo({
-                        ...editingTodo,
+                        ...todo,
                         text: event.target.value,
                       })
                     }
