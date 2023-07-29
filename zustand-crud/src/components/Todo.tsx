@@ -4,9 +4,11 @@ import { BsFillTrash3Fill } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
 import useStore, { TodoProps } from "../store";
 import TextareaAutosize from "react-textarea-autosize";
+import DeleteModal from "./Modals/DeleteModal";
 
 const Todo = ({ todos }: { todos: TodoProps[] }) => {
-  const { deleteTodo, updateTodo, setDraggedTodo } = useStore();
+  const { updateTodo, setDraggedTodo } = useStore();
+  const [isActiveModal, setActiveModal] = useState(false);
   const [editingTodo, setEditingTodo] = useState<TodoProps | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null); // Create a ref for the textarea
 
@@ -26,6 +28,7 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
 
   const handleCancel = () => {
     setEditingTodo(null);
+    setActiveModal(false);
   };
 
   const handleCancelOutsideTextarea = () => {
@@ -82,12 +85,19 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
               </>
             ) : (
               <>
+                {isActiveModal ? (
+                  <DeleteModal
+                    todo={todo}
+                    id={todo.id}
+                    handleCancel={handleCancel}
+                  />
+                ) : null}
                 <AiOutlineEdit
                   onClick={() => handleEdit(todo)}
                   className="text-green-600 mr-1"
                 />
                 <BsFillTrash3Fill
-                  onClick={() => deleteTodo(todo.id)}
+                  onClick={() => setActiveModal(true)}
                   className="text-red-500 mr-1"
                 />
               </>
