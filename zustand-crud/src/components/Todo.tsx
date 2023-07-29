@@ -43,7 +43,7 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
     <>
       {todos.map((todo) => (
         <div
-          className="flex flex-col w-full mb-2 bg-white p-1 rounded-md cursor-grab shadow-md"
+          className="flex flex-col w-full mb-2 bg-white p-1 rounded-md cursor-grab shadow-md hover:bg-gray-100"
           key={todo.id}
           draggable
           onDragStart={() => setDraggedTodo(todo.id)}

@@ -1,14 +1,17 @@
+// App.js
+import Navigation from "./Layout/Navigation";
 import Column from "./components/Column";
 
 const App = () => {
   return (
-    <div className="flex min-h-[100vh] items-center justify-center">
-      <div className="flex justify-center">
+    <>
+      <Navigation />
+      <section className="flex min-h-[100vh] mx-auto overflow-auto px-5">
         <Column status="Todo" />
         <Column status="Ongoing" />
         <Column status="Done" />
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 

@@ -16,7 +16,7 @@ function Column({ status }: ColumnProps) {
 
   return (
     <div
-      className="Column min-w-[20rem] max-w-[20rem] bg-gray-200 p-5 mr-2 rounded-md"
+      className="Column min-w-[20rem] max-w-[20rem] bg-gray-200 p-5 mr-2 rounded-md "
       onDragOver={(e) => {
         e.preventDefault();
       }}
@@ -28,8 +28,8 @@ function Column({ status }: ColumnProps) {
       }}
     >
       <h1 className="mb-2 p-2">{status}</h1>
-      {status === "Todo" ? <AddTodo /> : null}
       <Todo todos={todos} />
+      {status === "Todo" ? <AddTodo /> : null}
     </div>
   );
 }
