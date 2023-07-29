@@ -1,5 +1,5 @@
 // App.js
-import Navigation from "./Layout/Navigation";
+import Navigation from "./components/Layout/Navigation";
 import Column from "./components/Column";
 
 const App = () => {
