@@ -45,14 +45,14 @@ const AddTodo = () => {
   return (
     <>
       {isActive ? (
-        <div className="mb-2 p-2 bg-white flex flex-col rounded-lg shadow-md">
+        <div className="mb-2 p-2 bg-gray-950 text-gray-100 flex flex-col rounded-lg shadow-md border-2 border-gray-300">
           <textarea
             ref={textareaRef}
             value={newTodo}
             onChange={handleInputChange}
             onFocus={() => setMax(false)}
             placeholder="Enter a new todo"
-            className={`w-full resize-none bg-transparent p-2 rounded-md ${
+            className={`w-full resize-none bg-transparent p-2 rounded-md text-gray-100  ${
               max
                 ? "border-2 border-red-500 outline-red-600"
                 : "hover:bg-gray-200 "
@@ -84,7 +84,7 @@ const AddTodo = () => {
       ) : (
         <button
           onClick={handleAdd}
-          className="text-center w-full p-2 rounded-md hover:bg-gray-300"
+          className="text-center w-full p-2 rounded-md text-gray-200 hover:bg-gray-300"
         >
           + Add Task
         </button>

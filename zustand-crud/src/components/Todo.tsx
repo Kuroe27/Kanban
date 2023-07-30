@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { AiOutlineCheck, AiOutlineEdit } from "react-icons/ai";
 import {
   BsFillExclamationTriangleFill,
@@ -23,7 +23,10 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
     setEditingTodo(todo);
   };
 
-  const handleInputChange = (todo: TodoProps, event) => {
+  const handleInputChange = (
+    todo: TodoProps,
+    event: ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const text = event.target.value;
 
     if (text.length <= 255) {
@@ -70,7 +73,7 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
     <>
       {todos.map((todo) => (
         <div
-          className="flex flex-col w-full mb-2 bg-white p-1 rounded-md  shadow-md hover:bg-gray-100"
+          className="flex flex-col w-full mb-2 bg-gray-850 p-1 border-2 border-gray-300 rounded-md  shadow-md text-gray-200 hover:bg-gray-900 hover:border-gray-200 "
           key={todo.id}
           draggable
           onDragStart={() => setDraggedTodo(todo.id)}
@@ -79,21 +82,17 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
             <TextareaAutosize
               ref={inputRef}
               onFocus={() => setMax(false)}
-              className={`py-2 px-4 rounded-lg w-full resize-none hover:bg-gray-200  ${
-                editingTodo && editingTodo.id === todo.id
-                  ? " bg-white border-none"
-                  : " "
-              } ${
+              className={`py-2 px-4 rounded-lg w-full resize-none bg-transparent  hover:bg-gray-300 ${
                 max
                   ? "border-2 border-red-500 outline-red-600"
-                  : "hover:bg-gray-200 "
+                  : "outline-gray-200  hover:bg-gray-200 "
               }`}
               value={
                 editingTodo && editingTodo.id === todo.id
                   ? editingTodo.text
                   : todo.text
               }
-              onChange={() => handleInputChange(todo, event)}
+              onChange={(event) => handleInputChange(todo, event)}
               onBlur={handleCancelOutsideTextarea} // Set the onBlur event here
             />
           </div>
@@ -108,26 +107,18 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
                 </div>
 
                 <div className="flex">
-                  <div className="group flex relative">
+                  <div className=" relative  group ">
                     <AiOutlineCheck
                       onMouseDown={handleSave}
                       className="text-green-600 mr-1"
                     />
 
-                    <span
-                      className="group-hover:opacity-100 transition-opacity bg-gray-700 p-2
-                    text-sm text-gray-100 rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto"
-                    >
-                      Save
-                    </span>
+                    <span className="tooltip group-hover:scale-100">Save</span>
                   </div>
-                  <div className="group flex relative">
+                  <div className=" relative  group ">
                     <FcCancel onMouseDown={handleCancel} />
 
-                    <span
-                      className="group-hover:opacity-100 transition-opacity bg-gray-700 p-2
-                    text-sm text-gray-100 rounded-md absolute left-1/4 -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto"
-                    >
+                    <span className="tooltip group-hover:scale-100">
                       Cancel
                     </span>
                   </div>
@@ -143,28 +134,19 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
                   />
                 ) : null}
                 <div className="flex justify-end">
-                  <div className="group flex relative">
+                  <div className=" relative  group ">
                     <AiOutlineEdit
                       onClick={() => handleEdit(todo)}
                       className="text-green-600 mr-1 cursor-pointer"
                     />
-                    <span
-                      className="group-hover:opacity-100 transition-opacity bg-gray-700 p-2
-                    text-sm text-gray-100 rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto"
-                    >
-                      Edit
-                    </span>
+                    <span className="tooltip group-hover:scale-100">Edit</span>
                   </div>
-
-                  <div className="group flex relative">
+                  <div className=" relative  group ">
                     <BsFillTrash3Fill
                       onClick={() => setActiveModal(true)}
-                      className="text-red-500 mr-1 cursor-pointer"
+                      className="text-red-500 mr-1 cursor-pointer "
                     />
-                    <span
-                      className="group-hover:opacity-100 transition-opacity bg-gray-700 p-2
-                    text-sm text-gray-100 rounded-md absolute left-1/4 -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto"
-                    >
+                    <span className="tooltip group-hover:scale-100">
                       Delete
                     </span>
                   </div>
