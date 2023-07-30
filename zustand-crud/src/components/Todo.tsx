@@ -1,6 +1,9 @@
 import { useRef, useState } from "react";
 import { AiOutlineCheck, AiOutlineEdit } from "react-icons/ai";
-import { BsFillTrash3Fill } from "react-icons/bs";
+import {
+  BsFillExclamationTriangleFill,
+  BsFillTrash3Fill,
+} from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
 import useStore, { TodoProps } from "../store";
 import TextareaAutosize from "react-textarea-autosize";
@@ -10,25 +13,45 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
   const { updateTodo, setDraggedTodo } = useStore();
   const [isActiveModal, setActiveModal] = useState(false);
   const [editingTodo, setEditingTodo] = useState<TodoProps | null>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null); // Create a ref for the textarea
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [max, setMax] = useState(false);
 
   const handleEdit = (todo: TodoProps) => {
     if (inputRef.current) {
-      inputRef.current.focus(); // Focus on the textarea
+      inputRef.current.focus();
     }
     setEditingTodo(todo);
   };
 
+  const handleInputChange = (todo: TodoProps, event) => {
+    const text = event.target.value;
+
+    if (text.length <= 255) {
+      setEditingTodo({
+        ...todo,
+        text: event.target.value,
+      });
+      setMax(false);
+    } else {
+      setEditingTodo({
+        ...todo,
+        text: event.target.value.slice(0, 255),
+      });
+      setMax(true);
+    }
+  };
   const handleSave = () => {
     if (editingTodo && editingTodo.id !== undefined) {
       updateTodo(editingTodo.id, editingTodo.text);
       setEditingTodo(null);
+      setMax(false);
     }
   };
 
   const handleCancel = () => {
     setEditingTodo(null);
     setActiveModal(false);
+    setMax(false);
   };
 
   const handleCancelOutsideTextarea = () => {
@@ -40,13 +63,14 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
         setEditingTodo(null);
       }
     }
+    setMax(false);
   };
 
   return (
     <>
       {todos.map((todo) => (
         <div
-          className="flex flex-col w-full mb-2 bg-white p-1 rounded-md cursor-grab shadow-md hover:bg-gray-100"
+          className="flex flex-col w-full mb-2 bg-white p-1 rounded-md  shadow-md hover:bg-gray-100"
           key={todo.id}
           draggable
           onDragStart={() => setDraggedTodo(todo.id)}
@@ -54,35 +78,43 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
           <div>
             <TextareaAutosize
               ref={inputRef}
+              onFocus={() => setMax(false)}
               className={`py-2 px-4 rounded-lg w-full resize-none hover:bg-gray-200  ${
                 editingTodo && editingTodo.id === todo.id
                   ? " bg-white border-none"
                   : " "
-              } `}
+              } ${
+                max
+                  ? "border-2 border-red-500 outline-red-600"
+                  : "hover:bg-gray-200 "
+              }`}
               value={
                 editingTodo && editingTodo.id === todo.id
                   ? editingTodo.text
                   : todo.text
               }
-              onChange={(event) =>
-                setEditingTodo({
-                  ...todo,
-                  text: event.target.value,
-                })
-              }
+              onChange={() => handleInputChange(todo, event)}
               onBlur={handleCancelOutsideTextarea} // Set the onBlur event here
             />
           </div>
 
-          <div className="flex justify-end text-lg">
+          <div className=" text-lg  ">
             {editingTodo && editingTodo.id === todo.id ? (
-              <>
-                <AiOutlineCheck
-                  onMouseDown={handleSave} // Use onMouseDown instead of onClick
-                  className="text-green-600 mr-1"
-                />
-                <FcCancel onMouseDown={handleCancel} />
-              </>
+              <div className="flex justify-between">
+                <div>
+                  {max ? (
+                    <BsFillExclamationTriangleFill className="text-red-500 text-2xl" />
+                  ) : null}
+                </div>
+
+                <div className="flex">
+                  <AiOutlineCheck
+                    onMouseDown={handleSave}
+                    className="text-green-600 mr-1"
+                  />
+                  <FcCancel onMouseDown={handleCancel} />
+                </div>
+              </div>
             ) : (
               <>
                 {isActiveModal ? (
@@ -92,14 +124,16 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
                     handleCancel={handleCancel}
                   />
                 ) : null}
-                <AiOutlineEdit
-                  onClick={() => handleEdit(todo)}
-                  className="text-green-600 mr-1"
-                />
-                <BsFillTrash3Fill
-                  onClick={() => setActiveModal(true)}
-                  className="text-red-500 mr-1"
-                />
+                <div className="flex justify-end">
+                  <AiOutlineEdit
+                    onClick={() => handleEdit(todo)}
+                    className="text-green-600 mr-1 cursor-pointer"
+                  />
+                  <BsFillTrash3Fill
+                    onClick={() => setActiveModal(true)}
+                    className="text-red-500 mr-1 cursor-pointer"
+                  />
+                </div>
               </>
             )}
           </div>

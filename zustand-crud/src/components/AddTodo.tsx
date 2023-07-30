@@ -1,4 +1,5 @@
-import { SetStateAction, useState, useRef } from "react";
+import { useRef, useState } from "react";
+import { BsFillExclamationTriangleFill } from "react-icons/bs";
 import useStore from "../store";
 
 const AddTodo = () => {
@@ -6,10 +7,18 @@ const AddTodo = () => {
   const [newTodo, setNewTodo] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isActive, setIsActive] = useState(false);
-  const handleInputChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setNewTodo(event.target.value);
+  const [max, setMax] = useState(false);
+
+  const handleInputChange = (event: { target: { value: string } }) => {
+    const text = event.target.value;
+
+    if (text.length <= 255) {
+      setNewTodo(text);
+      setMax(false);
+    } else {
+      setNewTodo(text.slice(0, 255));
+      setMax(true);
+    }
   };
 
   const handleCreateTodo = () => {
@@ -17,48 +26,65 @@ const AddTodo = () => {
     addTodo(newTodo.trim());
     setNewTodo("");
     setIsActive(false);
+    setMax(false);
   };
+
   const handleAdd = () => {
     setIsActive(true);
     setTimeout(() => {
       textareaRef.current?.focus();
     }, 100);
+    setMax(false);
   };
 
   const handleCancel = () => {
     setIsActive(false);
     setNewTodo("");
+    setMax(false);
   };
   return (
     <>
       {isActive ? (
-        <div className="mb-2 p-2 bg-white flex flex-col items-end rounded-lg shadow-md">
+        <div className="mb-2 p-2 bg-white flex flex-col rounded-lg shadow-md">
           <textarea
             ref={textareaRef}
             value={newTodo}
             onChange={handleInputChange}
+            onFocus={() => setMax(false)}
             placeholder="Enter a new todo"
-            className="w-full resize-none bg-transparent   hover:bg-gray-200 p-2 rounded-md "
+            className={`w-full resize-none bg-transparent p-2 rounded-md ${
+              max
+                ? "border-2 border-red-500 outline-red-600"
+                : "hover:bg-gray-200 "
+            }`}
           />
-          <div>
-            <button
-              onClick={handleCreateTodo}
-              className="mt-2 mr-2 p-2 rounded-lg hover:bg-gray-200"
-            >
-              Create
-            </button>
-            <button
-              onClick={handleCancel}
-              className="mt-2 mr-2 p-2 rounded-lg hover:bg-gray-200"
-            >
-              Cancel
-            </button>
+
+          <div className="flex justify-between items-center px-2">
+            <div>
+              {max ? (
+                <BsFillExclamationTriangleFill className="text-red-500 text-2xl" />
+              ) : null}
+            </div>
+            <div>
+              <button
+                onClick={handleCreateTodo}
+                className="mt-2 mr-2 p-2 rounded-lg hover:bg-gray-200"
+              >
+                Create
+              </button>
+              <button
+                onClick={handleCancel}
+                className="mt-2 mr-2 p-2 rounded-lg hover:bg-gray-200"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       ) : (
         <button
           onClick={handleAdd}
-          className=" text-center w-full p-2 rounded-md hover:bg-gray-300"
+          className="text-center w-full p-2 rounded-md hover:bg-gray-300"
         >
           + Add Task
         </button>

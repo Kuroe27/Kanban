@@ -16,7 +16,8 @@ function Column({ status }: ColumnProps) {
 
   return (
     <div
-      className="Column min-w-[20rem] max-w-[20rem] bg-gray-200 p-5 mr-2 rounded-md "
+      className="Column min-w-[20rem] max-w-[20rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
+      from-gray-50 from-10% via-gray-100 via-30% to-gray-200 to-90% hover:bg-gray-200 overflow-auto"
       onDragOver={(e) => {
         e.preventDefault();
       }}

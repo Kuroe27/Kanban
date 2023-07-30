@@ -6,11 +6,11 @@ const App = () => {
   return (
     <>
       <Navigation />
-      <section className="flex min-h-[100vh] mx-auto overflow-auto px-5">
+      <main className="flex max-h-[92vh] min-h-[92vh] mx-auto overflow px-5">
         <Column status="Todo" />
         <Column status="Ongoing" />
         <Column status="Done" />
-      </section>
+      </main>
     </>
   );
 };
