@@ -108,11 +108,29 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
                 </div>
 
                 <div className="flex">
-                  <AiOutlineCheck
-                    onMouseDown={handleSave}
-                    className="text-green-600 mr-1"
-                  />
-                  <FcCancel onMouseDown={handleCancel} />
+                  <div className="group flex relative">
+                    <AiOutlineCheck
+                      onMouseDown={handleSave}
+                      className="text-green-600 mr-1"
+                    />
+
+                    <span
+                      className="group-hover:opacity-100 transition-opacity bg-gray-700 p-2
+                    text-sm text-gray-100 rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto"
+                    >
+                      Save
+                    </span>
+                  </div>
+                  <div className="group flex relative">
+                    <FcCancel onMouseDown={handleCancel} />
+
+                    <span
+                      className="group-hover:opacity-100 transition-opacity bg-gray-700 p-2
+                    text-sm text-gray-100 rounded-md absolute left-1/4 -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto"
+                    >
+                      Cancel
+                    </span>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -125,14 +143,31 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
                   />
                 ) : null}
                 <div className="flex justify-end">
-                  <AiOutlineEdit
-                    onClick={() => handleEdit(todo)}
-                    className="text-green-600 mr-1 cursor-pointer"
-                  />
-                  <BsFillTrash3Fill
-                    onClick={() => setActiveModal(true)}
-                    className="text-red-500 mr-1 cursor-pointer"
-                  />
+                  <div className="group flex relative">
+                    <AiOutlineEdit
+                      onClick={() => handleEdit(todo)}
+                      className="text-green-600 mr-1 cursor-pointer"
+                    />
+                    <span
+                      className="group-hover:opacity-100 transition-opacity bg-gray-700 p-2
+                    text-sm text-gray-100 rounded-md absolute left-1/2 -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto"
+                    >
+                      Edit
+                    </span>
+                  </div>
+
+                  <div className="group flex relative">
+                    <BsFillTrash3Fill
+                      onClick={() => setActiveModal(true)}
+                      className="text-red-500 mr-1 cursor-pointer"
+                    />
+                    <span
+                      className="group-hover:opacity-100 transition-opacity bg-gray-700 p-2
+                    text-sm text-gray-100 rounded-md absolute left-1/4 -translate-x-1/2 translate-y-full opacity-0 m-4 mx-auto"
+                    >
+                      Delete
+                    </span>
+                  </div>
                 </div>
               </>
             )}
