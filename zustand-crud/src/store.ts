@@ -8,22 +8,42 @@ export type TodoProps = {
   status: string
 }
 
+export type StatusProps = {
+  id: string, 
+  name: string
+}
+
 interface TodoStore {
   todos: TodoProps[] | [],
+  status: StatusProps[] | [],
   draggedTodo: null | string ,
   addTodo: (text: string) => void
   deleteTodo: (id: string) => void
   updateTodo: (id: string, newText: string) => void
   setDraggedTodo: (id: string | null) => void
-  updateStatus: (id: string, newStatus: string) => void // Change the parameter name to "newStatus"
+  updateStatus: (id: string, newStatus: string) => void 
+  createStatus: (name: string) => void 
 }
 
 
 const useStore = create<TodoStore>()(devtools((set) => ({
+  
   todos: [{
     id: uuidv4(), 
     text: "ads",
     status: "Done",
+  }],
+  status:[{
+    id: uuidv4(), 
+    name: "Todo",
+  },
+  {
+    id: uuidv4(), 
+    name: "Ongoing",
+  },
+  {
+    id: uuidv4(), 
+    name: "Done",
   }],
   draggedTodo: null,
   addTodo: (text) => {
@@ -50,7 +70,12 @@ const useStore = create<TodoStore>()(devtools((set) => ({
         todo.id === id ? { ...todo, status} : todo
       ),
     }), false, "status updated");
-  }
+  },
+  createStatus:(name) => {
+    set((state) => ({
+      status: [...state.status, {id: uuidv4(), name}]
+    }), false, "New column create successfully")
+  },
 })));
 
 export default useStore;

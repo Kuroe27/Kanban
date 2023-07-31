@@ -1,16 +1,12 @@
 // App.js
 import Navigation from "./components/Layout/Navigation";
-import Column from "./components/Column";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   return (
     <>
       <Navigation />
-      <main className="flex max-h-[95vh] min-h-[95vh] mx-auto overflow p-5 bg-gray-800">
-        <Column status="Todo" />
-        <Column status="Ongoing" />
-        <Column status="Done" />
-      </main>
+      <Dashboard />
     </>
   );
 };
