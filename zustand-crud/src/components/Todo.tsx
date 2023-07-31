@@ -45,7 +45,10 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
   };
   const handleSave = () => {
     if (editingTodo && editingTodo.id !== undefined) {
-      updateTodo(editingTodo.id, editingTodo.text);
+      if (editingTodo.text.trim() !== "") {
+        // Check if the trimmed text is not empty
+        updateTodo(editingTodo.id, editingTodo.text);
+      }
       setEditingTodo(null);
       setMax(false);
     }
@@ -60,12 +63,14 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
   const handleCancelOutsideTextarea = () => {
     // Check if the textarea is being edited and there's a reference to the textarea
     if (editingTodo && editingTodo.id !== undefined && inputRef.current) {
-      // Check if the active element is not the textarea itself
-      if (document.activeElement !== inputRef.current) {
-        updateTodo(editingTodo.id, editingTodo.text);
-        setEditingTodo(null);
+      if (editingTodo.text.trim() !== "") {
+        if (document.activeElement !== inputRef.current) {
+          updateTodo(editingTodo.id, editingTodo.text);
+        }
       }
     }
+    setEditingTodo(null);
+
     setMax(false);
   };
 
@@ -83,7 +88,7 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
               ref={inputRef}
               onFocus={() => setMax(false)}
               className={`py-2 px-4 rounded-lg w-full resize-none bg-transparent  hover:bg-gray-300 ${
-                max
+                max && editingTodo && editingTodo.id === todo.id
                   ? "border-2 border-red-500 outline-red-600"
                   : "outline-gray-200  hover:bg-gray-200 "
               }`}
@@ -133,18 +138,18 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
                     handleCancel={handleCancel}
                   />
                 ) : null}
-                <div className="flex justify-end">
+                <div className="flex justify-end text-xl">
                   <div className=" relative  group ">
                     <AiOutlineEdit
                       onClick={() => handleEdit(todo)}
-                      className="text-green-600 mr-1 cursor-pointer"
+                      className="text-gray-200 mr-2 cursor-pointer"
                     />
                     <span className="tooltip group-hover:scale-100">Edit</span>
                   </div>
                   <div className=" relative  group ">
                     <BsFillTrash3Fill
                       onClick={() => setActiveModal(true)}
-                      className="text-red-500 mr-1 cursor-pointer "
+                      className="text-gray-200 mr-1 cursor-pointer "
                     />
                     <span className="tooltip group-hover:scale-100">
                       Delete
