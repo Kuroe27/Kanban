@@ -23,12 +23,13 @@ interface TodoStore {
   setDraggedTodo: (id: string | null) => void
   updateStatus: (id: string, newStatus: string) => void 
   createStatus: (name: string) => void 
+  deleteStatus: (id: string) => void
+  updateStatusName:(id: string, newStatus: string) => void
 }
 
 
 const useStore = create<TodoStore>()(devtools((set) => ({
-  
-  todos: [{
+    todos: [{
     id: uuidv4(), 
     text: "ads",
     status: "Done",
@@ -76,6 +77,24 @@ const useStore = create<TodoStore>()(devtools((set) => ({
       status: [...state.status, {id: uuidv4(), name}]
     }), false, "New column create successfully")
   },
+  deleteStatus: (id) => {
+    set((state) => ({
+      status: state.status.filter(s => s.id !== id),
+    }),false, "columnDeleted")
+  },
+  updateStatusName: (id, newStatus) => {
+    set((state) => ({
+      status: state.status.map((s) =>
+        s.id === id ? { ...s, name: newStatus } : s
+      ),
+    todos: state.todos.map((todo) =>
+    todo.status === state.status.find((s )=> s.id === id)?.name
+    ? {...todo, status: newStatus} : todo
+    )
+    }));
+  },
+  
+  
 })));
 
 export default useStore;
