@@ -3,6 +3,8 @@ import { shallow } from "zustand/shallow";
 import useStore from "../store";
 import AddTodo from "./AddTodo";
 import Todo from "./Todo";
+import handleAdd from "./AddTodo";
+import { AiOutlinePlus } from "react-icons/ai";
 interface ColumnProps {
   status: string;
 }
@@ -28,7 +30,15 @@ function Column({ status }: ColumnProps) {
         }
       }}
     >
-      <h1 className="mb-2 p-2 text-gray-100 text-2xl">{status}</h1>
+      <div className="title flex items-center justify-between">
+        <h1 className="mb-2 p-2 text-gray-100 text-2xl">{status}</h1>
+        {status === "Todo" ? (
+          <AiOutlinePlus
+            onClick={handleAdd}
+            className="mb-2  text-gray-100 text-5xl p-2 hover:bg-gray-200 hover:text-gray-700"
+          />
+        ) : null}
+      </div>
       <Todo todos={todos} />
       {status === "Todo" ? <AddTodo /> : null}
     </div>

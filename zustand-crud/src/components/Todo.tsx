@@ -78,7 +78,7 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
     <>
       {todos.map((todo) => (
         <div
-          className="flex flex-col w-full mb-2 bg-gray-850 p-1 border-2 border-gray-300 rounded-md  shadow-md text-gray-200 hover:bg-gray-900 hover:border-gray-200 "
+          className="flex flex-col w-full mb-2 bg-gray-850 p-1 border-2 border-gray-300 rounded-md  shadow-md text-gray-100 hover:bg-gray-900 hover:border-gray-200 "
           key={todo.id}
           draggable
           onDragStart={() => setDraggedTodo(todo.id)}
@@ -87,7 +87,7 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
             <TextareaAutosize
               ref={inputRef}
               onFocus={() => setMax(false)}
-              className={`py-2 px-4 rounded-lg w-full resize-none bg-transparent  hover:bg-gray-300 ${
+              className={` text-xl py-2 px-4 rounded-lg w-full resize-none bg-transparent  hover:bg-gray-300 ${
                 max && editingTodo && editingTodo.id === todo.id
                   ? "border-2 border-red-500 outline-red-600"
                   : "outline-gray-200  hover:bg-gray-200 "

@@ -4,10 +4,12 @@ import useStore from "../store";
 
 const AddTodo = () => {
   const { addTodo } = useStore();
-  const [newTodo, setNewTodo] = useState("");
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isActive, setIsActive] = useState(false);
   const [max, setMax] = useState(false);
+  const [newTodo, setNewTodo] = useState("");
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const createBtn = useRef<HTMLButtonElement>(null);
 
   const handleInputChange = (event: { target: { value: string } }) => {
     const text = event.target.value;
@@ -27,12 +29,22 @@ const AddTodo = () => {
     setNewTodo("");
     setIsActive(false);
     setMax(false);
+    setTimeout(() => {
+      createBtn.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 200);
   };
 
   const handleAdd = () => {
     setIsActive(true);
     setTimeout(() => {
       textareaRef.current?.focus();
+      textareaRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }, 100);
     setMax(false);
   };
@@ -52,10 +64,10 @@ const AddTodo = () => {
             onChange={handleInputChange}
             onFocus={() => setMax(false)}
             placeholder="Enter a new todo"
-            className={`w-full resize-none bg-transparent p-2 rounded-md text-gray-100  ${
+            className={`w-full resize-none bg-transparent p-2 rounded-md text-gray-100 placeholder:text-gray-200 outline-gray-200  ${
               max
                 ? "border-2 border-red-500 outline-red-600"
-                : "hover:bg-gray-200 "
+                : "hover:bg-gray-200 hover:text-gray-850"
             }`}
           />
 
@@ -83,8 +95,10 @@ const AddTodo = () => {
         </div>
       ) : (
         <button
+          ref={createBtn}
           onClick={handleAdd}
-          className="text-center w-full p-2 rounded-md text-gray-200 hover:bg-gray-300"
+          id="add"
+          className="text-center text-xl w-full p-2 rounded-md text-gray-200 hover:bg-gray-300"
         >
           + Add Task
         </button>
