@@ -3,8 +3,10 @@ import { shallow } from "zustand/shallow";
 import useStore from "../store";
 import AddTodo from "./AddTodo";
 import Todo from "./Todo";
-import { AiOutlinePlus } from "react-icons/ai";
-import { useState } from "react";
+import { AiOutlineCheck, AiOutlinePlus } from "react-icons/ai";
+import { useRef, useState } from "react";
+import { BsFillTrash3Fill } from "react-icons/bs";
+import { RxCross2 } from "react-icons/rx";
 interface ColumnProps {
   status: string;
   id: string;
@@ -24,10 +26,17 @@ function Column({ status, id }: ColumnProps) {
   } = useStore();
 
   const [newStatus, setNewStatus] = useState(status);
+  const [isEditing, setIsEditing] = useState(false);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleBlur = () => {
+    setIsEditing(false);
+    updateStatusName(id, newStatus);
+  };
   return (
     <div
-      className="Column min-w-[20rem] max-w-[20rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
+      className="Column min-w-[25rem] max-w-[25rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
       from-gray-800 from-5% via-gray-950 via-45% to-gray-700 to-90%  overflow-auto"
       onDragOver={(e) => {
         e.preventDefault();
@@ -41,17 +50,37 @@ function Column({ status, id }: ColumnProps) {
     >
       <div className="title flex items-center justify-between">
         <input
-          className="mb-2 p-2 text-gray-100 bg-transparent text-2xl"
+          ref={inputRef}
+          className="mb-2 p-2 text-gray-100 bg-transparent text-2xl w-full outline-gray-200"
           value={newStatus}
           onChange={(e) => setNewStatus(e.target.value)}
+          onKeyDown={() => setIsEditing(true)}
+          onBlur={handleBlur}
         />
+        {!isEditing ? (
+          <BsFillTrash3Fill
+            className="text-gray-200 mr-1 cursor-pointer text-2xl  "
+            onClick={() => deleteStatus(id)}
+          />
+        ) : null}
+
         {status === "Todo" ? (
-          <AiOutlinePlus className="mb-2  text-gray-100 text-5xl p-2 hover:bg-gray-200 hover:text-gray-700" />
+          <AiOutlinePlus className=" text-gray-100 text-5xl p-2 hover:bg-gray-200 hover:text-gray-700" />
         ) : null}
       </div>
-      <button onClick={() => updateStatusName(id, newStatus)}>update</button>
-      <button onClick={() => deleteStatus(id)}>delete</button>
-      <button onClick={() => setNewStatus(status)}>Cancel</button>
+
+      {isEditing ? (
+        <div className="flex justify-end text-4xl text-gray-200 mb-2 ">
+          <AiOutlineCheck
+            onMouseDown={() => updateStatusName(id, newStatus)}
+            className="bg-gray-300 p-1 mr-2 hover:bg-gray-600"
+          />
+          <RxCross2
+            onMouseDown={() => setNewStatus(status)}
+            className="bg-gray-300 p-1 hover:bg-gray-600 "
+          />
+        </div>
+      ) : null}
       <Todo todos={todos} />
       {status === "Todo" ? <AddTodo /> : null}
     </div>
