@@ -16,4 +16,7 @@
     text-xs font-bold scale-0
     transition-all duration-100;
   }
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
 }

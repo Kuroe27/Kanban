@@ -13,7 +13,7 @@ const Dashboard = () => {
   return (
     <main className="flex max-h-[95vh] min-h-[95vh] mx-auto overflow-auto p-5 bg-gray-800">
       {status.map((status) => (
-        <Column id={status.id} status={status.name} />
+        <Column key={status.id} id={status.id} status={status.name} />
       ))}
       <div
         className="Column min-w-[20rem] max-w-[20rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
