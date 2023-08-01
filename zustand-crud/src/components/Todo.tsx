@@ -1,13 +1,10 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { AiOutlineCheck, AiOutlineEdit } from "react-icons/ai";
-import {
-  BsFillExclamationTriangleFill,
-  BsFillTrash3Fill,
-} from "react-icons/bs";
+import { BsFillExclamationTriangleFill } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
-import useStore, { TodoProps } from "../store";
 import TextareaAutosize from "react-textarea-autosize";
-import DeleteModal from "./Modals/DeleteModal";
+import useStore, { TodoProps } from "../store";
+import DeleteBtn from "./Buttons/DeleteBtn";
 
 const Todo = ({ todos }: { todos: TodoProps[] }) => {
   const { updateTodo, setDraggedTodo } = useStore();
@@ -131,13 +128,6 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
               </div>
             ) : (
               <>
-                {isActiveModal ? (
-                  <DeleteModal
-                    todo={todo}
-                    id={todo.id}
-                    handleCancel={handleCancel}
-                  />
-                ) : null}
                 <div className="flex justify-end text-xl">
                   <div className=" relative  group ">
                     <AiOutlineEdit
@@ -147,10 +137,7 @@ const Todo = ({ todos }: { todos: TodoProps[] }) => {
                     <span className="tooltip group-hover:scale-100">Edit</span>
                   </div>
                   <div className=" relative  group ">
-                    <BsFillTrash3Fill
-                      onClick={() => setActiveModal(true)}
-                      className="text-gray-200 mr-1 cursor-pointer "
-                    />
+                    <DeleteBtn id={todo.id} />
                     <span className="tooltip group-hover:scale-100">
                       Delete
                     </span>

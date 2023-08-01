@@ -17,6 +17,8 @@ interface TodoStore {
   todos: TodoProps[] | [],
   status: StatusProps[] | [],
   draggedTodo: null | string ,
+  todoId:  string,
+  activateModal: boolean,
   addTodo: (text: string) => void
   deleteTodo: (id: string) => void
   updateTodo: (id: string, newText: string) => void
@@ -25,11 +27,14 @@ interface TodoStore {
   createStatus: (name: string) => void 
   deleteStatus: (id: string) => void
   updateStatusName:(id: string, newStatus: string) => void
+  openModal: (activateModal: boolean) => void;
+  closeModal: (activateModal: boolean) => void;
+  setTodoId: (id: string) => void
 }
 
 
 const useStore = create<TodoStore>()(devtools((set) => ({
-    todos: [{
+  todos: [{
     id: uuidv4(), 
     text: "ads",
     status: "Done",
@@ -47,6 +52,8 @@ const useStore = create<TodoStore>()(devtools((set) => ({
     name: "Done",
   }],
   draggedTodo: null,
+  todoId: "",
+  activateModal: false,
   addTodo: (text) => {
     set((state) => ({
       todos: [...state.todos, { id: uuidv4(), text, status: 'Todo' }],
@@ -93,8 +100,15 @@ const useStore = create<TodoStore>()(devtools((set) => ({
     )
     }));
   },
-  
-  
+  openModal: () => {
+    set({ activateModal: true});
+  },
+  closeModal: () => {
+    set({ activateModal: false });
+  },
+  setTodoId: (id) => {
+    set({todoId: id})
+  },
 })));
 
 export default useStore;

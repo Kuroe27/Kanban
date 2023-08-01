@@ -63,6 +63,7 @@ function Column({ status, id }: ColumnProps) {
             onClick={() => deleteStatus(id)}
           />
         ) : null}
+        {/* {!isEditing ? <DeleteBtn id={id} deleteFunction="status" /> : null} */}
 
         {status === "Todo" ? (
           <AiOutlinePlus className=" text-gray-100 text-5xl p-2 hover:bg-gray-200 hover:text-gray-700" />

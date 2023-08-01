@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Column from "../components/Column";
 import useStore from "../store";
+import DeleteModal from "../components/Modals/DeleteModal";
 
 const Dashboard = () => {
   const [statusName, setStatusName] = useState("");
-  const { status, createStatus } = useStore();
+  const { status, createStatus, activateModal } = useStore();
 
   const handleCreateStatus = () => {
     createStatus(statusName);
@@ -32,6 +33,7 @@ const Dashboard = () => {
           + Add Task
         </button>
       </div>
+      {activateModal ? <DeleteModal /> : null}
     </main>
   );
 };
