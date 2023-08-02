@@ -4,11 +4,11 @@ import useStore from "../../store";
 const DeleteModal = () => {
   const {
     deleteTodo,
+    closeModal,
+    deleteStatus,
     todoId,
     todos,
-    closeModal,
     deleteFunction,
-    deleteStatus,
     status,
   } = useStore();
 

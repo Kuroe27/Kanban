@@ -36,6 +36,8 @@ interface TodoStore {
 
 
 const useStore = create<TodoStore>()(devtools((set) => ({
+
+  
   todos: [{
     id: uuidv4(), 
     text: "ads",
@@ -97,12 +99,14 @@ const useStore = create<TodoStore>()(devtools((set) => ({
       status: state.status.map((s) =>
         s.id === id ? { ...s, name: newStatus } : s
       ),
-    todos: state.todos.map((todo) =>
-    todo.status === state.status.find((s )=> s.id === id)?.name
-    ? {...todo, status: newStatus} : todo
-    )
+      todos: state.todos.map((todo) =>
+        todo.status === state.status.find((s) => s.id === id)?.name
+          ? { ...todo, status: newStatus }
+          : todo
+      ),
     }));
   },
+  
   openModal: () => {
     set({ activateModal: true});
   },

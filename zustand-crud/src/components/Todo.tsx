@@ -11,13 +11,12 @@ interface Todo {
 }
 
 const Todo = ({ todo }: { todo: Todo }) => {
-  // Rest of the component code...
   const { updateTodo, setDraggedTodo } = useStore();
-
   const [newText, setNewText] = useState(todo.text);
   const [isEditing, setIsEditing] = useState(false);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [max, setMax] = useState(false);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
   const handleEdit = () => {
     if (inputRef.current) {
       inputRef.current.focus();
