@@ -1,9 +1,10 @@
 import { ChangeEvent, useRef, useState } from "react";
-import { AiOutlineCheck, AiOutlineEdit } from "react-icons/ai";
-import { RxCross2 } from "react-icons/rx";
 import TextareaAutosize from "react-textarea-autosize";
 import useStore from "../store";
+import CancelBtn from "./Buttons/CancelBtn";
+import Confirm from "./Buttons/Confirm";
 import DeleteBtn from "./Buttons/DeleteBtn";
+import EditBtn from "./Buttons/EditBtn";
 
 interface Todo {
   id: string;
@@ -23,11 +24,18 @@ const Todo = ({ todo }: { todo: Todo }) => {
     }
   };
 
+  const handleConfirm = () => {
+    updateTodo(todo.id, newText);
+  };
+
   const handleBlur = () => {
     setIsEditing(false);
     updateTodo(todo.id, newText);
   };
 
+  const handleCancel = () => {
+    setNewText(todo.text);
+  };
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length <= 255) {
       setNewText(e.target.value);
@@ -49,10 +57,8 @@ const Todo = ({ todo }: { todo: Todo }) => {
         <TextareaAutosize
           name="text"
           ref={inputRef}
-          className={` text-xl py-2 px-4 rounded-lg w-full resize-none bg-transparent  hover:bg-gray-300 ${
-            max
-              ? "border-2   outline-red-600"
-              : "outline-gray-200  hover:bg-gray-200 "
+          className={` text-xl py-2 px-4 rounded-lg w-full resize-none bg-transparent mb-2  hover:bg-gray-300 ${
+            max ? "  outline-red-600" : ""
           }`}
           value={newText}
           onChange={(e) => handleChange(e)}
@@ -62,25 +68,13 @@ const Todo = ({ todo }: { todo: Todo }) => {
       </div>
       {isEditing ? (
         <div className="flex justify-end text-4xl text-gray-200 mb-2 ">
-          <AiOutlineCheck
-            onMouseDown={() => updateTodo(todo.id, newText)}
-            className="bg-gray-300 p-1 mr-2 hover:bg-gray-600"
-          />
-          <RxCross2
-            onMouseDown={() => setNewText(todo.text)}
-            className="bg-gray-300 p-1 hover:bg-gray-600 "
-          />
+          <Confirm handleConfirm={handleConfirm} />
+          <CancelBtn handleCancel={handleCancel} />
         </div>
       ) : (
         <>
           <div className="flex justify-end text-xl">
-            <div className=" relative  group ">
-              <AiOutlineEdit
-                onClick={handleEdit}
-                className="text-gray-200 mr-2 cursor-pointer"
-              />
-              <span className="tooltip group-hover:scale-100">Edit</span>
-            </div>
+            <EditBtn handleEdit={handleEdit} />
             <DeleteBtn id={todo.id} deleteFunction="todo" />
           </div>
         </>
