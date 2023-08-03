@@ -1,10 +1,7 @@
 import { ChangeEvent, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import useStore from "../store";
-import CancelBtn from "./Buttons/CancelBtn";
-import Confirm from "./Buttons/Confirm";
-import DeleteBtn from "./Buttons/DeleteBtn";
-import EditBtn from "./Buttons/EditBtn";
+import Buttons from "./Buttons/Buttons";
 
 interface Todo {
   id: string;
@@ -36,6 +33,7 @@ const Todo = ({ todo }: { todo: Todo }) => {
   const handleCancel = () => {
     setNewText(todo.text);
   };
+
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length <= 255) {
       setNewText(e.target.value);
@@ -66,19 +64,15 @@ const Todo = ({ todo }: { todo: Todo }) => {
           onBlur={handleBlur}
         />
       </div>
-      {isEditing ? (
-        <div className="flex justify-end text-4xl text-gray-200 mb-2 ">
-          <Confirm handleConfirm={handleConfirm} />
-          <CancelBtn handleCancel={handleCancel} />
-        </div>
-      ) : (
-        <>
-          <div className="flex justify-end text-xl">
-            <EditBtn handleEdit={handleEdit} />
-            <DeleteBtn id={todo.id} deleteFunction="todo" />
-          </div>
-        </>
-      )}
+
+      <Buttons
+        handleConfirm={handleConfirm}
+        handleCancel={handleCancel}
+        handleEdit={handleEdit}
+        id={todo.id}
+        isEditing={isEditing}
+        btnFuntion="todo"
+      />
     </div>
   );
 };

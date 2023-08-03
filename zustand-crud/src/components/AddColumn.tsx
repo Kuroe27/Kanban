@@ -3,8 +3,8 @@ import { BsFillExclamationDiamondFill } from "react-icons/bs";
 import useStore from "../store";
 
 const AddColumn = () => {
-  const [statusName, setStatusName] = useState("");
   const { createStatus, status } = useStore();
+  const [statusName, setStatusName] = useState("");
   const [notice, setNotice] = useState(false);
   const [showSpan, setShowSpan] = useState(false);
 
@@ -30,6 +30,7 @@ const AddColumn = () => {
     }
     setStatusName(e.target.value);
   };
+
   useEffect(() => {
     if (showSpan) {
       setTimeout(() => {

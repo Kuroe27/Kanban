@@ -7,11 +7,9 @@ interface DeleteBtnProps {
 }
 
 const DeleteBtn = ({ id, deleteFunction }: DeleteBtnProps) => {
-  const { openModal, setTodoId, setDeleteFunction } = useStore();
+  const { openModal } = useStore();
   const handleClick = () => {
-    setTodoId(id);
-    openModal(true);
-    setDeleteFunction(deleteFunction);
+    openModal(true, id, deleteFunction);
   };
   return (
     <div className=" relative  group ">

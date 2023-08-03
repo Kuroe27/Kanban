@@ -28,16 +28,11 @@ interface TodoStore {
   createStatus: (name: string) => void 
   deleteStatus: (id: string) => void
   updateStatusName:(id: string, newStatus: string) => void
-  openModal: (activateModal: boolean) => void;
-  closeModal: (activateModal: boolean) => void;
-  setTodoId: (id: string) => void
-  setDeleteFunction: (id: string) => void
+  openModal: (boolean: boolean, id:string, deleteFunction:string) => void;
 }
 
 
 const useStore = create<TodoStore>()(devtools((set) => ({
-
-  
   todos: [{
     id: uuidv4(), 
     text: "ads",
@@ -107,18 +102,12 @@ const useStore = create<TodoStore>()(devtools((set) => ({
     }));
   },
   
-  openModal: () => {
-    set({ activateModal: true});
+  openModal: (boolean, id, deleteFunc) => {
+    set({ activateModal: boolean,
+      todoId: id,
+      deleteFunction: deleteFunc,
+    },false, "Open Modal");
   },
-  closeModal: () => {
-    set({ activateModal: false });
-  },
-  setTodoId: (id) => {
-    set({todoId: id})
-  },
-  setDeleteFunction: (deleteFunc) => {
-    set({deleteFunction: deleteFunc})
-  }
 })));
 
 export default useStore;

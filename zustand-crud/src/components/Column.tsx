@@ -1,10 +1,9 @@
-// Column.tsx
 import { useRef, useState } from "react";
-import { AiOutlineCheck, AiOutlinePlus } from "react-icons/ai";
-import { RxCross2 } from "react-icons/rx";
+import { AiOutlinePlus } from "react-icons/ai";
 import { shallow } from "zustand/shallow";
 import useStore from "../store";
 import AddTodo from "./AddTodo";
+import Buttons from "./Buttons/Buttons";
 import DeleteBtn from "./Buttons/DeleteBtn";
 import Todo from "./Todo";
 
@@ -14,23 +13,29 @@ interface ColumnProps {
 }
 
 function Column({ status, id }: ColumnProps) {
+  const [newStatus, setNewStatus] = useState(status);
+  const [isEditing, setIsEditing] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const todos = useStore(
     (state) => state.todos.filter((todo) => todo.status === status),
     shallow
   );
-
   const { draggedTodo, setDraggedTodo, updateStatus, updateStatusName } =
     useStore();
+  const handleConfirm = () => {
+    updateStatusName(id, newStatus);
+  };
 
-  const [newStatus, setNewStatus] = useState(status);
-  const [isEditing, setIsEditing] = useState(false);
-
-  const inputRef = useRef<HTMLInputElement>(null);
+  const handleCancel = () => {
+    setNewStatus(status);
+  };
 
   const handleBlur = () => {
     setIsEditing(false);
     updateStatusName(id, newStatus);
   };
+
   return (
     <div
       className="Column min-w-[25rem] max-w-[25rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
@@ -61,18 +66,13 @@ function Column({ status, id }: ColumnProps) {
         ) : null}
       </div>
 
-      {isEditing ? (
-        <div className="flex justify-end text-4xl text-gray-200 mb-2 ">
-          <AiOutlineCheck
-            onMouseDown={() => updateStatusName(id, newStatus)}
-            className="bg-gray-300 p-1 mr-2 hover:bg-gray-600"
-          />
-          <RxCross2
-            onMouseDown={() => setNewStatus(status)}
-            className="bg-gray-300 p-1 hover:bg-gray-600 "
-          />
-        </div>
-      ) : null}
+      <Buttons
+        handleConfirm={handleConfirm}
+        handleCancel={handleCancel}
+        isEditing={isEditing}
+        btnFuntion={""}
+      />
+
       {todos.map((todo) => (
         <Todo key={todo.id} todo={todo} />
       ))}

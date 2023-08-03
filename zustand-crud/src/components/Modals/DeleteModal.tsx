@@ -3,8 +3,8 @@ import useStore from "../../store";
 
 const DeleteModal = () => {
   const {
+    openModal,
     deleteTodo,
-    closeModal,
     deleteStatus,
     todoId,
     todos,
@@ -29,6 +29,7 @@ const DeleteModal = () => {
   const handleDelete = () => {
     if (deleteFunction === "todo") {
       deleteTodo(todoId);
+      openModal(false, "", "");
     } else {
       deleteStatus(todoId);
     }
@@ -54,7 +55,7 @@ const DeleteModal = () => {
             >
               Delete
             </button>
-            <button onClick={() => closeModal(true)}>Cancel</button>
+            <button onClick={() => openModal(false, "", "")}>Cancel</button>
           </div>
         </div>
       </div>
