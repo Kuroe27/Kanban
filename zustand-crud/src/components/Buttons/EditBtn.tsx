@@ -7,7 +7,7 @@ interface EditProps {
 const EditBtn = ({ handleEdit }: EditProps) => {
   return (
     <>
-      <div className=" relative  group  text-2xl ">
+      <div className=" relative  group  text-lg ">
         <AiOutlineEdit
           onClick={handleEdit}
           className="text-gray-200 mr-2 cursor-pointer"

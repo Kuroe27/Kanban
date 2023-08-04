@@ -51,7 +51,7 @@ const Todo = ({ todo }: { todo: TodoProps }) => {
         <TextareaAutosize
           name="text"
           ref={inputRef}
-          className={` text-xl py-2 px-4 rounded-lg w-full resize-none bg-transparent mb-2  hover:bg-gray-300 ${
+          className={` text-lg py-2 px-4 rounded-lg w-full resize-none bg-transparent mb-2  hover:bg-gray-300 ${
             max ? "  outline-red-600" : ""
           }`}
           value={newText}

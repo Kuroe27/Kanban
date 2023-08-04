@@ -80,7 +80,7 @@ function Column({ status }: ColumnProps) {
   };
   return (
     <div
-      className="Column min-w-[25rem] max-w-[25rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
+      className="Column min-w-[17rem] max-w-[17rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
       from-gray-800 from-5% via-gray-950 via-45% to-gray-700 to-90%  overflow-y-auto"
       onDragOver={(e) => {
         e.preventDefault();
@@ -95,7 +95,7 @@ function Column({ status }: ColumnProps) {
       <div className="title flex items-center justify-between">
         <input
           ref={inputRef}
-          className="mb-2 p-2 text-gray-100 bg-transparent text-2xl w-full outline-gray-200"
+          className="mb-2 p-2 text-gray-100 bg-transparent text-lg w-full outline-gray-200"
           value={newStatus}
           onChange={(e) => handleChange(e)}
           onKeyDown={() => setIsEditing(true)}

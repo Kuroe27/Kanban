@@ -9,7 +9,7 @@ const CancelBtn = ({ handleCancel }: CancelBtn) => {
     <>
       <RxCross2
         onMouseDown={handleCancel}
-        className="bg-gray-300 p-1 hover:bg-gray-600 "
+        className="bg-gray-300 p-1 hover:bg-gray-600  text-2xl"
       />
     </>
   );

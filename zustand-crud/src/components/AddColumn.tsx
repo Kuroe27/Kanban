@@ -48,7 +48,7 @@ const AddColumn = () => {
   return (
     <>
       <div
-        className="Column min-w-[25rem] max-w-[25rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
+        className="Column min-w-[17rem] max-w-[17rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
       from-gray-800 from-5% via-gray-950 via-45% to-gray-700 to-90%  "
       >
         <div className="flex  items-center">
@@ -61,7 +61,7 @@ const AddColumn = () => {
           <Notice />
         </div>
         <button
-          className="text-center text-xl w-full p-2 rounded-md text-gray-200 hover:bg-gray-300"
+          className="text-center text-lg w-full p-2 rounded-md text-gray-200 hover:bg-gray-300"
           onClick={handleCreateStatus}
         >
           + Add Task

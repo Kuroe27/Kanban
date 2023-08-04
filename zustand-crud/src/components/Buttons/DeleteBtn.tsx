@@ -13,7 +13,7 @@ const DeleteBtn = ({ id, deleteFunction }: ModalProps) => {
   return (
     <div className=" relative  group ">
       <BsFillTrash3Fill
-        className="text-gray-200 mr-1 cursor-pointer text-2xl"
+        className="text-gray-200 mr-1 cursor-pointer text-lg"
         onClick={handleClick}
       />
       <span className="tooltip group-hover:scale-100">Delete</span>
