@@ -1,18 +1,19 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { BsFillExclamationDiamondFill } from "react-icons/bs";
 import useStore from "../store";
+import Notice from "./Icons/Notice";
 
 const AddColumn = () => {
-  const { createStatus, status } = useStore();
+  const { createStatus, status, setEditStatus, editStatus } = useStore();
   const [statusName, setStatusName] = useState("");
-  const [notice, setNotice] = useState(false);
-  const [showSpan, setShowSpan] = useState(false);
 
   const handleCreateStatus = () => {
-    if (!notice) {
+    if (statusName.trim() === "") return;
+    if (!editStatus.showNotice) {
       createStatus(statusName);
     } else {
-      setShowSpan(true);
+      setEditStatus({
+        showSpan: true,
+      });
       return;
     }
     setStatusName("");
@@ -24,20 +25,26 @@ const AddColumn = () => {
         currentstatus.name.toLowerCase() === e.target.value.toLowerCase()
     );
     if (currentStatus) {
-      setNotice(true);
+      setEditStatus({
+        showNotice: true,
+      });
     } else {
-      setNotice(false);
+      setEditStatus({
+        showNotice: false,
+      });
     }
     setStatusName(e.target.value);
   };
 
   useEffect(() => {
-    if (showSpan) {
+    if (editStatus.showSpan) {
       setTimeout(() => {
-        setShowSpan(false);
+        setEditStatus({
+          showSpan: false,
+        });
       }, 3000);
     }
-  }, [showSpan]);
+  }, [editStatus.showSpan]);
   return (
     <>
       <div
@@ -51,23 +58,8 @@ const AddColumn = () => {
             placeholder="Enter a new todo"
             className={`w-full resize-none bg-transparent p-2 rounded-md text-gray-100 placeholder:text-gray-200 outline-gray-200  `}
           />
-          {notice ? (
-            <>
-              <div className=" relative  group ">
-                <BsFillExclamationDiamondFill className="text-5xl text-yellow-600 p-2" />
-
-                <span
-                  className={`absolute tooltip top-[2.5rem] left-[-7rem] text-base p-4 ${
-                    showSpan ? "scale-100" : "scale-0"
-                  } group-hover:scale-100`}
-                >
-                  Status name already taken
-                </span>
-              </div>
-            </>
-          ) : null}
+          <Notice />
         </div>
-
         <button
           className="text-center text-xl w-full p-2 rounded-md text-gray-200 hover:bg-gray-300"
           onClick={handleCreateStatus}

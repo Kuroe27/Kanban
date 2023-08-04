@@ -2,15 +2,11 @@ import { ChangeEvent, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import useStore from "../store";
 import Buttons from "./Buttons/Buttons";
+import { TodoProps } from "../store";
 
-interface Todo {
-  id: string;
-  text: string;
-}
-
-const Todo = ({ todo }: { todo: Todo }) => {
+const Todo = ({ todo }: { todo: TodoProps }) => {
   const { updateTodo, setDraggedTodo } = useStore();
-  const [newText, setNewText] = useState(todo.text);
+  const [newText, setNewText] = useState<string>(todo.text || "");
   const [isEditing, setIsEditing] = useState(false);
   const [max, setMax] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -71,7 +67,7 @@ const Todo = ({ todo }: { todo: Todo }) => {
         handleEdit={handleEdit}
         id={todo.id}
         isEditing={isEditing}
-        btnFuntion="todo"
+        btnFunction="todo"
       />
     </div>
   );

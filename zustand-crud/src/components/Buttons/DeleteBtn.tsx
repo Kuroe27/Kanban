@@ -1,15 +1,14 @@
 import { BsFillTrash3Fill } from "react-icons/bs";
-import useStore from "../../store";
+import useStore, { ModalProps } from "../../store";
 
-interface DeleteBtnProps {
-  id: string;
-  deleteFunction: string;
-}
-
-const DeleteBtn = ({ id, deleteFunction }: DeleteBtnProps) => {
+const DeleteBtn = ({ id, deleteFunction }: ModalProps) => {
   const { openModal } = useStore();
   const handleClick = () => {
-    openModal(true, id, deleteFunction);
+    openModal({
+      id: id,
+      activateModal: true,
+      deleteFunction: deleteFunction,
+    });
   };
   return (
     <div className=" relative  group ">

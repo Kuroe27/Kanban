@@ -10,16 +10,27 @@ export type TodoProps = {
 
 export type StatusProps = {
   id: string, 
-  name: string
+  name: string,
+}
+
+export type ModalProps = {
+  id: string ,
+  activateModal?: boolean,
+  deleteFunction?: string
+}
+
+export type EditStatusProps = {
+  id?: string
+  showNotice?: boolean,
+  showSpan?: boolean,
 }
 
 interface TodoStore {
   todos: TodoProps[] | [],
   status: StatusProps[] | [],
-  draggedTodo: null | string ,
-  todoId:  string,
-  activateModal: boolean,
-  deleteFunction: string,
+  modal: ModalProps,
+  editStatus: EditStatusProps,
+  draggedTodo: null | string,
   addTodo: (text: string) => void
   deleteTodo: (id: string) => void
   updateTodo: (id: string, newText: string) => void
@@ -28,9 +39,9 @@ interface TodoStore {
   createStatus: (name: string) => void 
   deleteStatus: (id: string) => void
   updateStatusName:(id: string, newStatus: string) => void
-  openModal: (boolean: boolean, id:string, deleteFunction:string) => void;
+  openModal: (modal: ModalProps) => void;
+  setEditStatus: (editStatus: EditStatusProps) => void
 }
-
 
 const useStore = create<TodoStore>()(devtools((set) => ({
   todos: [{
@@ -51,9 +62,16 @@ const useStore = create<TodoStore>()(devtools((set) => ({
     name: "Done",
   }],
   draggedTodo: null,
-  todoId: "",
-  activateModal: false,
-  deleteFunction: "",
+  modal: {
+    id: "",
+    activateModal: false,
+    deleteFunction: "",
+  },
+  editStatus: {
+    id: "",
+    showNotice: false,
+    showSpan: false,
+  },
   addTodo: (text) => {
     set((state) => ({
       todos: [...state.todos, { id: uuidv4(), text, status: 'Todo' }],
@@ -101,12 +119,21 @@ const useStore = create<TodoStore>()(devtools((set) => ({
       ),
     }));
   },
-  
-  openModal: (boolean, id, deleteFunc) => {
-    set({ activateModal: boolean,
-      todoId: id,
-      deleteFunction: deleteFunc,
-    },false, "Open Modal");
+  openModal: (modal) => {
+    set((state) => ({
+      modal: {
+        ...state.modal,
+        ...modal
+      }
+    }), false, "Open Modal");
+  },
+  setEditStatus: (editStatus) => {
+    set((state) => ({
+      editStatus: {
+        ...state.editStatus, 
+        ...editStatus
+      }
+    }))
   },
 })));
 

@@ -2,36 +2,33 @@ import { AiFillExclamationCircle } from "react-icons/ai";
 import useStore from "../../store";
 
 const DeleteModal = () => {
-  const {
-    openModal,
-    deleteTodo,
-    deleteStatus,
-    todoId,
-    todos,
-    deleteFunction,
-    status,
-  } = useStore();
+  const { openModal, deleteTodo, deleteStatus, todos, status, modal } =
+    useStore();
 
   const findTodo = () => {
-    const todo = todos.find((todo) => todo.id === todoId);
+    const todo = todos.find((todo) => todo.id === modal.id);
     return todo ? todo.text : null;
   };
 
   const todoText = findTodo();
 
   const findStatus = () => {
-    const statuss = status.find((s) => s.id === todoId);
+    const statuss = status.find((s) => s.id === modal.id);
     return statuss ? statuss.name : null;
   };
 
   const statusText = findStatus();
 
   const handleDelete = () => {
-    if (deleteFunction === "todo") {
-      deleteTodo(todoId);
-      openModal(false, "", "");
+    if (modal.deleteFunction === "todo") {
+      deleteTodo(modal.id);
+      openModal({
+        id: "",
+        activateModal: false,
+        deleteFunction: "",
+      });
     } else {
-      deleteStatus(todoId);
+      deleteStatus(modal.id);
     }
   };
   return (
@@ -40,7 +37,7 @@ const DeleteModal = () => {
         <div className="bg-gray-600 p-10 rounded-lg w-4/12">
           <h1 className="text-3xl flex items-center mb-5">
             <AiFillExclamationCircle className="text-red-500 mr-2" />
-            {deleteFunction === "todo"
+            {modal.deleteFunction === "todo"
               ? `Delete task "${todoText}"`
               : `Delete status "${statusText}"`}
           </h1>
@@ -55,7 +52,17 @@ const DeleteModal = () => {
             >
               Delete
             </button>
-            <button onClick={() => openModal(false, "", "")}>Cancel</button>
+            <button
+              onClick={() =>
+                openModal({
+                  id: "",
+                  activateModal: false,
+                  deleteFunction: "",
+                })
+              }
+            >
+              Cancel
+            </button>
           </div>
         </div>
       </div>
