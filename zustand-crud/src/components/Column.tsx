@@ -22,7 +22,7 @@ function Column({ status }: ColumnProps) {
     shallow
   );
 
-  const { setEditStatus, status: statuss, editStatus } = useStore();
+  const { setEditStatus, status: statuss, editStatus, isonHover } = useStore();
 
   const { draggedTodo, setDraggedTodo, updateStatus, updateStatusName } =
     useStore();
@@ -79,9 +79,11 @@ function Column({ status }: ColumnProps) {
     setNewStatus(e.target.value);
   };
   return (
-    <div
-      className="Column min-w-[17rem] max-w-[17rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
-      from-gray-800 from-5% via-gray-950 via-45% to-gray-700 to-90%  overflow-y-auto"
+    <section
+      className={`Column min-w-[17rem] max-w-[17rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
+    from-gray-800 from-5% via-gray-950 via-45% to-gray-700 to-90% 
+${isonHover ? " " : "overflow-y-auto overflow-x-hidden"} 
+`}
       onDragOver={(e) => {
         e.preventDefault();
       }}
@@ -126,7 +128,7 @@ function Column({ status }: ColumnProps) {
         <Todo key={todo.id} todo={todo} />
       ))}
       {status.name === "Todo" ? <AddTodo /> : null}
-    </div>
+    </section>
   );
 }
 

@@ -98,7 +98,7 @@ const AddTodo = () => {
           ref={createBtn}
           onClick={handleAdd}
           id="add"
-          className="text-center text-lg w-full p-2 rounded-md text-gray-200 hover:bg-gray-300"
+          className="text-center text-sm  w-full p-2 rounded-md text-gray-200 hover:bg-gray-300"
         >
           + Add Task
         </button>

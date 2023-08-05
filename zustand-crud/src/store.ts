@@ -31,6 +31,7 @@ interface TodoStore {
   modal: ModalProps,
   editStatus: EditStatusProps,
   draggedTodo: null | string,
+  isonHover?: boolean,
   addTodo: (text: string) => void
   deleteTodo: (id: string) => void
   updateTodo: (id: string, newText: string) => void
@@ -41,6 +42,7 @@ interface TodoStore {
   updateStatusName:(id: string, newStatus: string) => void
   openModal: (modal: ModalProps) => void;
   setEditStatus: (editStatus: EditStatusProps) => void
+  setHover:(isonHover: boolean) => void
 }
 
 const useStore = create<TodoStore>()(devtools((set) => ({
@@ -72,6 +74,7 @@ const useStore = create<TodoStore>()(devtools((set) => ({
     showNotice: false,
     showSpan: false,
   },
+  isOnHover: false,
   addTodo: (text) => {
     set((state) => ({
       todos: [...state.todos, { id: uuidv4(), text, status: 'Todo' }],
@@ -134,6 +137,9 @@ const useStore = create<TodoStore>()(devtools((set) => ({
         ...editStatus
       }
     }))
+  },
+  setHover: (isonHover) => {
+    set({isonHover})
   },
 })));
 

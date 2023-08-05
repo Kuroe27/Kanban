@@ -7,7 +7,7 @@ const Dashboard = () => {
   const { status, modal } = useStore();
 
   return (
-    <main className="flex max-h-[93vh] min-h-[93vh] mx-auto overflow-auto p-5 bg-gray-800">
+    <main className="flex max-h-[93vh] min-h-[93vh] mx-auto -auto p-5 bg-gray-800 ">
       {status.map((status) => (
         <Column key={status.id} status={status} />
       ))}
