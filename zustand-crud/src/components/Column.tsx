@@ -22,7 +22,7 @@ function Column({ status }: ColumnProps) {
     shallow
   );
 
-  const { setEditStatus, status: statuss, editStatus, isonHover } = useStore();
+  const { setEditStatus, status: statuss, editStatus } = useStore();
 
   const { draggedTodo, setDraggedTodo, updateStatus, updateStatusName } =
     useStore();
@@ -33,6 +33,9 @@ function Column({ status }: ColumnProps) {
     }
     if (!editStatus.showNotice) {
       updateStatusName(status.id, newStatus);
+      setEditStatus({
+        id: "",
+      });
     } else {
       setEditStatus({
         showSpan: true,
@@ -54,6 +57,9 @@ function Column({ status }: ColumnProps) {
       setNewStatus(status.name);
     } else {
       updateStatusName(status.id, newStatus);
+      setEditStatus({
+        id: "",
+      });
     }
     setIsEditing(false);
   };
@@ -80,10 +86,8 @@ function Column({ status }: ColumnProps) {
   };
   return (
     <section
-      className={`Column min-w-[17rem] max-w-[17rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
-    from-gray-800 from-5% via-gray-950 via-45% to-gray-700 to-90% 
-${isonHover ? " " : "overflow-y-auto overflow-x-hidden"} 
-`}
+      className="Column min-w-[17rem] max-w-[17rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
+    from-gray-800 from-5% via-gray-950 via-45% to-gray-700 to-90%  overflow-y-auto overflow-x-hidden"
       onDragOver={(e) => {
         e.preventDefault();
       }}

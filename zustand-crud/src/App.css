@@ -9,6 +9,7 @@
   padding: 0;
 }
 body {
+  overflow: hidden;
   background: #252628;
 }
 @layer components {
