@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { BsFillExclamationTriangleFill } from "react-icons/bs";
-import useStore from "../store";
+import useStore from "../../store";
 
 const AddTodo = () => {
   const { addTodo } = useStore();

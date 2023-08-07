@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import useStore from "../store";
-import Notice from "./Icons/Notice";
+import useStore from "../../store";
+import Notice from "../Icons/Notice";
 
 const AddColumn = () => {
   const { createStatus, status, setEditStatus, editStatus } = useStore();

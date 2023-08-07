@@ -1,8 +1,8 @@
 import { ChangeEvent, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import useStore from "../store";
-import Buttons from "./Buttons/Buttons";
-import { TodoProps } from "../store";
+import useStore from "../../store";
+import Buttons from "../Buttons/Buttons";
+import { TodoProps } from "../../store";
 
 const Todo = ({ todo }: { todo: TodoProps }) => {
   const { updateTodo, setDraggedTodo } = useStore();

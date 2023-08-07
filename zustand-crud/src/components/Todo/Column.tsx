@@ -1,13 +1,13 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { shallow } from "zustand/shallow";
-import useStore from "../store";
+import useStore from "../../store";
 import AddTodo from "./AddTodo";
-import Buttons from "./Buttons/Buttons";
-import DeleteBtn from "./Buttons/DeleteBtn";
-import Notice from "./Icons/Notice";
+import Buttons from "../Buttons/Buttons";
+import DeleteBtn from "../Buttons/DeleteBtn";
+import Notice from "../Icons/Notice";
 import Todo from "./Todo";
-import { StatusProps } from "../store";
+import { StatusProps } from "../../store";
 
 interface ColumnProps {
   status: StatusProps;

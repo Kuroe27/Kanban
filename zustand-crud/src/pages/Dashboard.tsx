@@ -1,5 +1,5 @@
-import AddColumn from "../components/AddColumn";
-import Column from "../components/Column";
+import AddColumn from "../components/Todo/AddColumn";
+import Column from "../components/Todo/Column";
 import DeleteModal from "../components/Modals/DeleteModal";
 import useStore from "../store";
 
