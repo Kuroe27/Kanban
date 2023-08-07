@@ -1,13 +1,11 @@
 import { ChangeEvent, useRef, useState } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
 import { shallow } from "zustand/shallow";
-import useStore from "../../store";
-import AddTodo from "./AddTodo";
+import useStore, { StatusProps } from "../../store";
 import Buttons from "../Buttons/Buttons";
 import DeleteBtn from "../Buttons/DeleteBtn";
 import Notice from "../Icons/Notice";
+import AddTodo from "./AddTodo";
 import Todo from "./Todo";
-import { StatusProps } from "../../store";
 
 interface ColumnProps {
   status: StatusProps;
@@ -33,13 +31,9 @@ function Column({ status }: ColumnProps) {
     }
     if (!editStatus.showNotice) {
       updateStatusName(status.id, newStatus);
-      setEditStatus({
-        id: "",
-      });
+      setEditStatus({ id: "" });
     } else {
-      setEditStatus({
-        showSpan: true,
-      });
+      setEditStatus({ showSpan: true });
       return;
     }
   };
@@ -58,15 +52,13 @@ function Column({ status }: ColumnProps) {
       setNewStatus(status.name);
     } else {
       updateStatusName(status.id, newStatus);
-      setEditStatus({
-        id: "",
-      });
+      setEditStatus({ id: "" });
     }
     setIsEditing(false);
   };
 
   const handleClick = (id: string) => {
-    setEditStatus({ id: id });
+    setEditStatus({ id });
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -75,20 +67,20 @@ function Column({ status }: ColumnProps) {
         currentstatus.name.toLowerCase() === e.target.value.toLowerCase()
     );
     if (currentStatus && currentStatus.name !== status.name) {
-      setEditStatus({
-        showNotice: true,
-      });
+      setEditStatus({ showNotice: true });
     } else {
-      setEditStatus({
-        showNotice: false,
-      });
+      setEditStatus({ showNotice: false });
     }
+    setNewStatus(e.target.value);
+
+    setEditStatus({
+      showNotice: currentStatus && currentStatus.name !== status.name,
+    });
     setNewStatus(e.target.value);
   };
   return (
     <section
-      className="Column min-w-[17rem] max-w-[17rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
-    from-gray-800 from-5% via-gray-950 via-45% to-gray-700 to-90%  overflow-y-auto overflow-x-hidden"
+      className="column"
       onDragOver={(e) => {
         e.preventDefault();
       }}
@@ -102,25 +94,22 @@ function Column({ status }: ColumnProps) {
       <div className="title flex items-center justify-between">
         <input
           ref={inputRef}
-          className="mb-2 p-2 text-gray-100 bg-transparent text-lg w-full outline-gray-200"
+          className="input truncate "
           value={newStatus}
           onChange={(e) => handleChange(e)}
           onKeyDown={() => setIsEditing(true)}
           onBlur={handleBlur}
           onClick={() => handleClick(status.id)}
         />
-        {editStatus.id === status.id ? <Notice /> : null}
-        {!isEditing ? (
+
+        {editStatus.id === status.id && <Notice />}
+        {!isEditing && (
           <DeleteBtn
             id={status.id}
             deleteFunction={"status"}
             activateModal={false}
           />
-        ) : null}
-
-        {status.name === "Todo" ? (
-          <AiOutlinePlus className=" text-gray-100 text-5xl p-2 hover:bg-gray-200 hover:text-gray-700" />
-        ) : null}
+        )}
       </div>
 
       <Buttons
@@ -132,7 +121,7 @@ function Column({ status }: ColumnProps) {
       {todos.map((todo) => (
         <Todo key={todo.id} todo={todo} />
       ))}
-      {status.name === "Todo" ? <AddTodo /> : null}
+      {status.name === "Todo" && <AddTodo />}
     </section>
   );
 }

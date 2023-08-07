@@ -64,7 +64,7 @@ const AddTodo = () => {
             onChange={handleInputChange}
             onFocus={() => setMax(false)}
             placeholder="Enter a new todo"
-            className={`w-full resize-none bg-transparent p-2 rounded-md text-gray-100 placeholder:text-gray-200 outline-gray-200  ${
+            className={`input  ${
               max
                 ? "border-2 border-red-500 outline-red-600"
                 : "hover:bg-gray-200 hover:text-gray-850"
@@ -78,16 +78,10 @@ const AddTodo = () => {
               ) : null}
             </div>
             <div>
-              <button
-                onClick={handleCreateTodo}
-                className="mt-2 mr-2 p-2 rounded-lg hover:bg-gray-200"
-              >
+              <button onClick={handleCreateTodo} className="buttonText">
                 Create
               </button>
-              <button
-                onClick={handleCancel}
-                className="mt-2 mr-2 p-2 rounded-lg hover:bg-gray-200"
-              >
+              <button onClick={handleCancel} className="buttonText">
                 Cancel
               </button>
             </div>

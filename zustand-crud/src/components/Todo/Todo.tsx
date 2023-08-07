@@ -51,9 +51,7 @@ const Todo = ({ todo }: { todo: TodoProps }) => {
         <TextareaAutosize
           name="text"
           ref={inputRef}
-          className={` text-sm py-2 px-4 rounded-lg w-full resize-none bg-transparent mb-2  hover:bg-gray-300 overflow-hidden ${
-            max ? "  outline-red-600" : ""
-          }`}
+          className={` input ${max ? "  outline-red-600" : ""}`}
           value={newText}
           onChange={(e) => handleChange(e)}
           onKeyDown={() => setIsEditing(true)}

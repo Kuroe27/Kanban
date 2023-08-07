@@ -39,8 +39,21 @@ body {
     @apply text-gray-200  mr-2 cursor-pointer text-base;
   }
 
+  .buttonText {
+    @apply mt-2 mr-2 p-2 rounded-lg hover:bg-gray-200;
+  }
+
   .confirmation {
     @apply bg-gray-300 p-1 hover:bg-gray-600 text-2xl;
+  }
+
+  .column {
+    @apply min-w-[17rem] max-w-[17rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
+    from-gray-800 from-5% via-gray-950 via-45% to-gray-700 to-90%  overflow-y-auto overflow-x-hidden;
+  }
+
+  .input {
+    @apply w-full bg-transparent p-2 rounded-md text-gray-100 placeholder:text-gray-200 outline-gray-200 resize-none;
   }
 
   .dropdown:hover .dropdown-menu {
