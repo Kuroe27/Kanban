@@ -7,10 +7,7 @@ interface CancelBtn {
 const CancelBtn = ({ handleCancel }: CancelBtn) => {
   return (
     <>
-      <RxCross2
-        onMouseDown={handleCancel}
-        className="bg-gray-300 p-1 hover:bg-gray-600  text-2xl"
-      />
+      <RxCross2 onMouseDown={handleCancel} className="confirmation" />
     </>
   );
 };

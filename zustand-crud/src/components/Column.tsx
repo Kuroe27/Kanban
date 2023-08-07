@@ -51,6 +51,7 @@ function Column({ status }: ColumnProps) {
   const handleBlur = () => {
     if (newStatus.trim() === "" || editStatus.showNotice) {
       setEditStatus({
+        id: "",
         showNotice: false,
         showSpan: true,
       });

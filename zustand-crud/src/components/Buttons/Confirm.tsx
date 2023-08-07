@@ -9,7 +9,7 @@ const Confirm = ({ handleConfirm }: ConfirmProps) => {
     <>
       <AiOutlineCheck
         onMouseDown={handleConfirm}
-        className="bg-gray-300 p-1 mr-2 hover:bg-gray-600 text-2xl"
+        className="confirmation mr-2"
       />
     </>
   );

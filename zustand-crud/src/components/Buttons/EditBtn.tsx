@@ -8,10 +8,7 @@ const EditBtn = ({ handleEdit }: EditProps) => {
   return (
     <>
       <div className=" relative  group  text-lg ">
-        <AiOutlineEdit
-          onClick={handleEdit}
-          className="text-gray-200 mr-2 cursor-pointer"
-        />
+        <AiOutlineEdit onClick={handleEdit} className="button" />
         <span className="tooltip group-hover:scale-100">Edit</span>
       </div>
     </>
