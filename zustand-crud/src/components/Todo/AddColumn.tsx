@@ -25,25 +25,22 @@ const AddColumn = () => {
       (currentstatus) =>
         currentstatus.name.toLowerCase() === e.target.value.toLowerCase()
     );
-    if (currentStatus) {
-      setEditStatus({
-        showNotice: true,
-        showSpan: true,
-      });
-    } else {
-      setEditStatus({
-        showNotice: false,
-      });
-    }
+
+    setEditStatus({
+      id: "Add Column",
+      showNotice: !!currentStatus,
+      showSpan: !!currentStatus,
+    });
     setStatusName(e.target.value);
   };
 
   const handleBlur = () => {
-    setStatusName("");
     setEditStatus({
+      id: "",
       showNotice: false,
       showSpan: false,
     });
+    setStatusName("");
   };
 
   useEffect(() => {
@@ -61,13 +58,14 @@ const AddColumn = () => {
       <div className="column">
         <div className="flex items-center">
           <input
+            onClick={() => setEditStatus({ id: "Add Column" })}
             onChange={(e) => handleChange(e)}
             onBlur={handleBlur}
             value={statusName}
             placeholder="Enter a new todo"
             className="input"
           />
-          {editStatus.id === "" ? <Notice /> : null}
+          {editStatus.id === "Add Column" ? <Notice /> : null}
           <AiOutlinePlus
             className="button  text-3xl text-white"
             onMouseDown={handleCreateStatus}

@@ -23,18 +23,22 @@ const AddTodo = () => {
     }
   };
 
+  const handleCancel = () => {
+    setIsActive(false);
+    setNewTodo("");
+    setMax(false);
+  };
+
   const handleCreateTodo = () => {
     if (newTodo.trim() === "") return;
     addTodo(newTodo.trim());
-    setNewTodo("");
-    setIsActive(false);
-    setMax(false);
     setTimeout(() => {
       createBtn.current?.scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
     }, 200);
+    handleCancel();
   };
 
   const handleAdd = () => {
@@ -49,11 +53,6 @@ const AddTodo = () => {
     setMax(false);
   };
 
-  const handleCancel = () => {
-    setIsActive(false);
-    setNewTodo("");
-    setMax(false);
-  };
   return (
     <>
       {isActive ? (

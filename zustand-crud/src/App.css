@@ -53,7 +53,7 @@ body {
   }
 
   .input {
-    @apply w-full bg-transparent p-2 rounded-md text-gray-100 placeholder:text-gray-200 outline-gray-200 resize-none;
+    @apply w-full bg-transparent p-2 mb-2 rounded-md text-gray-100 placeholder:text-gray-200 outline-gray-200 resize-none;
   }
 
   .dropdown:hover .dropdown-menu {

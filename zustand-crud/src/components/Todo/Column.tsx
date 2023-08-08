@@ -20,10 +20,15 @@ function Column({ status }: ColumnProps) {
     shallow
   );
 
-  const { setEditStatus, status: statuss, editStatus } = useStore();
-
-  const { draggedTodo, setDraggedTodo, updateStatus, updateStatusName } =
-    useStore();
+  const {
+    draggedTodo,
+    setDraggedTodo,
+    updateStatus,
+    updateStatusName,
+    setEditStatus,
+    status: statuss,
+    editStatus,
+  } = useStore();
 
   const handleConfirm = () => {
     if (newStatus.trim() === "") {
@@ -87,14 +92,15 @@ function Column({ status }: ColumnProps) {
       onDrop={(_e) => {
         if (draggedTodo !== null) {
           updateStatus(draggedTodo, status.name);
-          setDraggedTodo(null);
         }
+        setDraggedTodo(null);
+        console.log(draggedTodo);
       }}
     >
       <div className="title flex items-center justify-between">
         <input
           ref={inputRef}
-          className="input truncate "
+          className="input truncate"
           value={newStatus}
           onChange={(e) => handleChange(e)}
           onKeyDown={() => setIsEditing(true)}
