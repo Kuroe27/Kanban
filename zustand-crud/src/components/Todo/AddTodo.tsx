@@ -56,7 +56,7 @@ const AddTodo = () => {
   return (
     <>
       {isActive ? (
-        <div className="mb-2 p-2 bg-gray-950 text-gray-100 flex flex-col rounded-lg shadow-md border-2 border-gray-300">
+        <div className="mb-2 p-2 text-gray-100 flex flex-col rounded-lg shadow-md border-2 border-gray-700">
           <textarea
             ref={textareaRef}
             value={newTodo}
@@ -70,17 +70,23 @@ const AddTodo = () => {
             }`}
           />
 
-          <div className="flex justify-between items-center px-2">
+          <div className="flex justify-between items-center text-sm px-2">
             <div>
               {max ? (
                 <BsFillExclamationTriangleFill className="text-red-500 text-2xl" />
               ) : null}
             </div>
             <div>
-              <button onClick={handleCreateTodo} className="buttonText">
+              <button
+                onClick={handleCreateTodo}
+                className="buttonText bg-gray-100 text-gray-800 hover:bg-gray-50"
+              >
                 Create
               </button>
-              <button onClick={handleCancel} className="buttonText">
+              <button
+                onClick={handleCancel}
+                className="buttonText hover:bg-gray-700"
+              >
                 Cancel
               </button>
             </div>
@@ -91,7 +97,7 @@ const AddTodo = () => {
           ref={createBtn}
           onClick={handleAdd}
           id="add"
-          className="text-center text-sm  w-full p-2 rounded-md text-gray-200 hover:bg-gray-300"
+          className="text-center text-sm  w-full p-2 rounded-md bg-gray-700 text-gray-100 hover:bg-gray-500"
         >
           + Add Task
         </button>

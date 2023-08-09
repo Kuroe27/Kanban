@@ -47,7 +47,7 @@ const Todo = ({ todo }: { todo: TodoProps }) => {
 
   return (
     <div
-      className={`flex flex-col w-full mb-2 bg-gray-850 p-1 border-2 border-gray-300 rounded-md  shadow-md text-gray-100 hover:border-gray-200 hover:bg-gray-900  `}
+      className={`flex flex-col w-full mb-2 bg-gray-850 p-1 border-2 border-gray-700 rounded-md  shadow-md text-gray-100 hover:border-gray-400 hover:bg-gray-450  `}
       key={todo.id}
       draggable
       onDragStart={handleDrag}

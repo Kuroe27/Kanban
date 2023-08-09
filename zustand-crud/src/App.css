@@ -30,13 +30,13 @@ body {
 @layer components {
   .tooltip {
     @apply absolute w-auto p-2 m-2 min-w-max top-6 -left-4 rounded-md shadow-md
-    text-white bg-gray-900 
+    text-white bg-gray-700 
     text-xs font-bold scale-0
     transition-all duration-100;
   }
 
   .button {
-    @apply text-gray-200  mr-2 cursor-pointer text-base;
+    @apply text-gray-350  mr-2 cursor-pointer text-base;
   }
 
   .buttonText {
@@ -44,16 +44,15 @@ body {
   }
 
   .confirmation {
-    @apply bg-gray-300 p-1 hover:bg-gray-600 text-2xl;
+    @apply p-1 bg-gray-100 text-gray-800 hover:bg-gray-50 text-2xl;
   }
 
   .column {
-    @apply min-w-[17rem] max-w-[17rem] rounded-lg mr-2 p-2 bg-gradient-to-t 
-    from-gray-800 from-5% via-gray-950 via-45% to-gray-700 to-90%  overflow-y-auto overflow-x-hidden;
+    @apply min-w-[17rem] max-w-[17rem] rounded-lg mr-2 p-2 border-gray-700 border-[1px]   overflow-y-auto overflow-x-hidden;
   }
 
   .input {
-    @apply w-full bg-transparent p-2 mb-2 rounded-md text-gray-100 placeholder:text-gray-200 outline-gray-200 resize-none;
+    @apply w-full bg-transparent p-2 mb-2 rounded-md text-gray-100 placeholder:text-gray-400 outline-gray-200 resize-none;
   }
 
   .dropdown:hover .dropdown-menu {
