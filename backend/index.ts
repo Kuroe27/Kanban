@@ -1,0 +1,29 @@
+import express from "express";
+import { config } from "dotenv";
+import path from "path";
+import color from "colors";
+import connectDB from "./src/config/db";
+import errorHandler from "./src/middlewares/errorMiddleware";
+import userRouter from "./src/routes/userRouter";
+
+config();
+connectDB();
+
+const port = process.env.PORT;
+const app = express();
+const _dirname = __dirname;
+
+// middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// Routes
+app.use("/api/users", userRouter);
+
+app.use(express.static(path.join(_dirname, "src/routes")));
+app.listen(port, () => {
+  console.log(`${port}`);
+});
+
+// error Handling
+app.use(errorHandler);
