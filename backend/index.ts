@@ -6,6 +6,7 @@ import connectDB from "./src/config/db";
 import errorHandler from "./src/middlewares/errorMiddleware";
 import userRouter from "./src/routes/userRouter";
 import cookieParser from "cookie-parser";
+import statusRouter from "./src/routes/statusRouter";
 config();
 connectDB();
 
@@ -20,6 +21,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/users", userRouter);
+app.use("/api/status", statusRouter);
 
 app.use(express.static(path.join(_dirname, "src/routes")));
 app.listen(port, () => {

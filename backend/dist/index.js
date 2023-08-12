@@ -9,6 +9,8 @@ const path_1 = __importDefault(require("path"));
 const db_1 = __importDefault(require("./src/config/db"));
 const errorMiddleware_1 = __importDefault(require("./src/middlewares/errorMiddleware"));
 const userRouter_1 = __importDefault(require("./src/routes/userRouter"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const statusRouter_1 = __importDefault(require("./src/routes/statusRouter"));
 (0, dotenv_1.config)();
 (0, db_1.default)();
 const port = process.env.PORT;
@@ -17,8 +19,10 @@ const _dirname = __dirname;
 // middleware
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
+app.use((0, cookie_parser_1.default)());
 // Routes
 app.use("/api/users", userRouter_1.default);
+app.use("/api/status", statusRouter_1.default);
 app.use(express_1.default.static(path_1.default.join(_dirname, "src/routes")));
 app.listen(port, () => {
     console.log(`${port}`);

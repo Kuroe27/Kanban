@@ -1,9 +1,10 @@
 "use strict";
+// userController.ts
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerUser = exports.logoutUser = exports.loginUser = exports.getUser = void 0;
+exports.deleteUser = exports.updateUser = exports.registerUser = exports.logoutUser = exports.loginUser = exports.getUser = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -84,4 +85,41 @@ const logoutUser = (req, res) => {
     res.status(200).json({ message: "Logged Out succesfully" });
 };
 exports.logoutUser = logoutUser;
+const updateUser = (0, express_async_handler_1.default)(async (req, res) => {
+    const user = await userModel_1.default.findById(req.user._id);
+    if (!user) {
+        res.status(404);
+        throw new Error("Error Not found");
+    }
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.user.password) {
+        user.password = req.body.password;
+    }
+    const updateUser = await user.save();
+    res.json({
+        _id: updateUser._id,
+        email: updateUser.email,
+        name: updateUser.name,
+    });
+});
+exports.updateUser = updateUser;
+// deleteUser
+const deleteUser = (0, express_async_handler_1.default)(async (req, res) => {
+    const user = await userModel_1.default.findById(req.user._id);
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+    await userModel_1.default.deleteOne({ _id: user.id });
+    const cookieOptions = {
+        httpOnly: true,
+        expires: new Date(0),
+    };
+    res.cookie("jwt", "", cookieOptions);
+    res.status(200).json({
+        message: "User deleted successfully",
+    });
+});
+exports.deleteUser = deleteUser;
 //# sourceMappingURL=userController.js.map
