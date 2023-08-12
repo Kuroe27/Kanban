@@ -5,7 +5,7 @@ import color from "colors";
 import connectDB from "./src/config/db";
 import errorHandler from "./src/middlewares/errorMiddleware";
 import userRouter from "./src/routes/userRouter";
-
+import cookieParser from "cookie-parser";
 config();
 connectDB();
 
@@ -16,6 +16,7 @@ const _dirname = __dirname;
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // Routes
 app.use("/api/users", userRouter);
