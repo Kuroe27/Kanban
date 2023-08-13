@@ -16,5 +16,4 @@ const statusSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
 export default mongoose.model("Status", statusSchema);
