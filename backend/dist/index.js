@@ -11,6 +11,7 @@ const errorMiddleware_1 = __importDefault(require("./src/middlewares/errorMiddle
 const userRouter_1 = __importDefault(require("./src/routes/userRouter"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const statusRouter_1 = __importDefault(require("./src/routes/statusRouter"));
+const taskRouter_1 = __importDefault(require("./src/routes/taskRouter"));
 (0, dotenv_1.config)();
 (0, db_1.default)();
 const port = process.env.PORT;
@@ -23,6 +24,7 @@ app.use((0, cookie_parser_1.default)());
 // Routes
 app.use("/api/users", userRouter_1.default);
 app.use("/api/status", statusRouter_1.default);
+app.use("/api/task", taskRouter_1.default);
 app.use(express_1.default.static(path_1.default.join(_dirname, "src/routes")));
 app.listen(port, () => {
     console.log(`${port}`);
