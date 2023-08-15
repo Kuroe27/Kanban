@@ -9,9 +9,11 @@ import {
 } from "../controllers/taskController";
 const TaskRouter = express.Router();
 
-TaskRouter.post("/", protect, createTask);
-TaskRouter.get("/", protect, getTask);
-TaskRouter.delete("/:id", protect, deleteTask);
-TaskRouter.put("/:id", protect, updateTask);
-TaskRouter.get("/:id", protect, getSpecificTask);
+TaskRouter.route("/").get(protect, getTask).post(protect, createTask);
+
+TaskRouter.route("/:id")
+  .delete(protect, deleteTask)
+  .put(protect, updateTask)
+  .get(protect, getSpecificTask);
+
 export default TaskRouter;

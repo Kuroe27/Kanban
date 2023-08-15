@@ -10,9 +10,12 @@ import {
 
 const statusRouter = express.Router();
 
-statusRouter.post("/", protect, createStatus);
-statusRouter.get("/", protect, getStatus);
-statusRouter.get("/:id", protect, getSpecificStatus);
-statusRouter.delete("/:id", protect, deleteStatus);
-statusRouter.put("/:id", protect, updateStatus);
+statusRouter.route("/").post(protect, createStatus).get(protect, getStatus);
+
+statusRouter
+  .route("/:id")
+  .get(protect, getSpecificStatus)
+  .delete(protect, deleteStatus)
+  .put(protect, updateStatus);
+
 export default statusRouter;
