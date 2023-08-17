@@ -8,6 +8,11 @@ export type TodoProps = {
   status: string;
 };
 
+export type AuthProps = {
+  email: string;
+  password: string;
+};
+
 export type StatusProps = {
   id: string;
   name: string;
@@ -39,6 +44,7 @@ type Actions = {
 };
 
 type TodoStore = {
+  auth: AuthProps[] | [];
   todos: TodoProps[] | [];
   status: StatusProps[] | [];
   modal: ModalProps;
@@ -79,6 +85,10 @@ const useStore = create<TodoStore & Actions>()(
       id: "",
       showNotice: false,
       showSpan: false,
+    },
+    auth: {
+      email: "",
+      password: "",
     },
     addTodo: (text) => {
       set(
@@ -179,6 +189,7 @@ const useStore = create<TodoStore & Actions>()(
         "edit"
       );
     },
+    login: () => {},
   }))
 );
 
