@@ -8,12 +8,15 @@ import userRouter from "./src/routes/userRouter";
 import cookieParser from "cookie-parser";
 import statusRouter from "./src/routes/statusRouter";
 import TaskRouter from "./src/routes/taskRouter";
+import cors from "cors";
 config();
 connectDB();
 
 const port = process.env.PORT;
 const app = express();
 const _dirname = __dirname;
+
+app.use(cors());
 
 // middleware
 app.use(express.json());
