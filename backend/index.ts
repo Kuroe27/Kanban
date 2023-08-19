@@ -1,14 +1,13 @@
-import express from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import { config } from "dotenv";
+import express from "express";
 import path from "path";
-import color from "colors";
 import connectDB from "./src/config/db";
 import errorHandler from "./src/middlewares/errorMiddleware";
-import userRouter from "./src/routes/userRouter";
-import cookieParser from "cookie-parser";
 import statusRouter from "./src/routes/statusRouter";
 import TaskRouter from "./src/routes/taskRouter";
-import cors from "cors";
+import userRouter from "./src/routes/userRouter";
 config();
 connectDB();
 
@@ -16,12 +15,16 @@ const port = process.env.PORT;
 const app = express();
 const _dirname = __dirname;
 
-app.use(cors());
-
 // middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend's URL
+    credentials: true, // Enable cookies
+  })
+);
 
 // Routes
 app.use("/api/users", userRouter);
