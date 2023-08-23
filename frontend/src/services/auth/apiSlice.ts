@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useStore from "../../store";
 import { useNavigate } from "react-router-dom";
-const API_URL = "http://localhost:3000/api/users";
+const API_URL = "https://gorgeous-pear-trunks.cyclic.app/api/users";
 
 interface user {
   email: string;
