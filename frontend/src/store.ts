@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { v4 as uuidv4 } from "uuid";
+const userRaw = localStorage.getItem("user");
+const user = userRaw !== null ? JSON.parse(userRaw) : null;
 
 export type TodoProps = {
   id: string;
@@ -25,6 +27,11 @@ export type EditStatusProps = {
   showSpan?: boolean;
 };
 
+export type AuthProps = {
+  id: string;
+  name: string;
+  email: string;
+};
 type Actions = {
   addTodo: (text: string) => void;
   deleteTodo: (id: string) => void;
@@ -39,6 +46,7 @@ type Actions = {
 };
 
 type TodoStore = {
+  auth: AuthProps[] | [];
   todos: TodoProps[] | [];
   status: StatusProps[] | [];
   modal: ModalProps;
@@ -48,6 +56,13 @@ type TodoStore = {
 
 const useStore = create<TodoStore & Actions>()(
   devtools((set) => ({
+    auth: [
+      {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+      },
+    ],
     todos: [
       {
         id: uuidv4(),
@@ -80,7 +95,6 @@ const useStore = create<TodoStore & Actions>()(
       showNotice: false,
       showSpan: false,
     },
-
     addTodo: (text) => {
       set(
         (state) => ({

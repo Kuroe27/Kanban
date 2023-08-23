@@ -1,12 +1,24 @@
-// import { create } from "zustand";
-// import { devtools } from "zustand/middleware";
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
-// export type Auth = {
-//     email: string,
-//     password: string,
-// }
-// const useAuth = create<Auth>(
-//     devtools((set) => {
-//         auth:[]
-//     })
-// )
+export type authProps = {
+  email: string;
+  password: string;
+};
+
+type Auth = {
+  auth: authProps[] | [];
+};
+
+const useAuth = create<Auth>()(
+  devtools((set) => ({
+    auth: [
+      {
+        email: "",
+        password: "",
+      },
+    ],
+  }))
+);
+
+export default useAuth;
