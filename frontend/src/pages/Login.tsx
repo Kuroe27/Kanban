@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import apiSlice from "../services/auth/apiSlice";
+import { useNavigate } from "react-router-dom";
+import useStore from "../store";
 const Login = () => {
+  const navigate = useNavigate();
+  const { auth } = useStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const loginMutation = apiSlice.loginMutation();
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (auth) {
+      navigate("/");
+    }
+  }, [auth, navigate]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const user = {
@@ -15,11 +23,7 @@ const Login = () => {
 
     loginMutation.mutateAsync(user);
   };
-  useEffect(() => {
-    if (loginMutation.isSuccess) {
-      navigate("/");
-    }
-  }, [loginMutation.isSuccess, navigate]);
+
   return (
     <div className="min-h-[100vh]">
       <form className="  text-gray-300 p-10">

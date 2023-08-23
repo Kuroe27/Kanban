@@ -28,11 +28,12 @@ export type EditStatusProps = {
 };
 
 export type AuthProps = {
-  id: string;
-  name: string;
-  email: string;
+  id?: string;
+  name?: string;
+  email?: string;
 };
 type Actions = {
+  setUser: (user: string) => void;
   addTodo: (text: string) => void;
   deleteTodo: (id: string) => void;
   updateTodo: (id: string, newText: string) => void;
@@ -56,13 +57,8 @@ type TodoStore = {
 
 const useStore = create<TodoStore & Actions>()(
   devtools((set) => ({
-    auth: [
-      {
-        id: user._id,
-        email: user.email,
-        name: user.name,
-      },
-    ],
+    auth: user,
+
     todos: [
       {
         id: uuidv4(),
@@ -95,6 +91,12 @@ const useStore = create<TodoStore & Actions>()(
       showNotice: false,
       showSpan: false,
     },
+    setUser: (user) => {
+      set((state) => ({
+        auth: user,
+      }));
+    },
+
     addTodo: (text) => {
       set(
         (state) => ({

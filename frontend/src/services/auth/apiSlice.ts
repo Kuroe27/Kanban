@@ -2,6 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useStore from "../../store";
+import { useNavigate } from "react-router-dom";
 const API_URL = "http://localhost:3000/api/users";
 
 interface user {
@@ -10,6 +12,9 @@ interface user {
 }
 
 const loginMutation = () => {
+  const navigate = useNavigate();
+  const { setUser } = useStore();
+
   return useMutation({
     mutationFn: async (user: user) => {
       try {
@@ -33,6 +38,10 @@ const loginMutation = () => {
         toast.error(`Login error: ${message}`);
         throw error;
       }
+    },
+    onSuccess: (data) => {
+      setUser(data);
+      navigate("/");
     },
   });
 };
