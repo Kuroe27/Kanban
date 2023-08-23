@@ -19,10 +19,15 @@ const _dirname = __dirname;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://kanbanflow-nine.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5174", // Replace with your frontend's URL
-    credentials: true, // Enable cookies
+    origin: allowedOrigins,
   })
 );
 

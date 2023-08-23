@@ -58,7 +58,6 @@ type TodoStore = {
 const useStore = create<TodoStore & Actions>()(
   devtools((set) => ({
     auth: user,
-
     todos: [
       {
         id: uuidv4(),
@@ -91,12 +90,11 @@ const useStore = create<TodoStore & Actions>()(
       showNotice: false,
       showSpan: false,
     },
-    setUser: (user) => {
-      set((state) => ({
+    setUser: () => {
+      set(() => ({
         auth: user,
       }));
     },
-
     addTodo: (text) => {
       set(
         (state) => ({
