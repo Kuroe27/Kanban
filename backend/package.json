@@ -5,8 +5,9 @@
   "main": "index.ts",
   "module": "module",
   "scripts": {
-    "start": "npm install && npm run build && ts-node index.ts",
+    "build-with-deps": "npm install && npm run build",
     "build": "tsc",
+    "start": "ts-node index.ts",
     "server": "nodemon index.ts"
   },
   "keywords": [],
