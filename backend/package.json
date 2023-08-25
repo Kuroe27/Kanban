@@ -8,7 +8,8 @@
     "build-with-deps": "npm install && npm run build",
     "build": "tsc",
     "start": "ts-node index.ts",
-    "server": "nodemon index.ts"
+    "server": "nodemon index.ts",
+    "vercel-build": "echo hello"
   },
   "keywords": [],
   "author": "",
