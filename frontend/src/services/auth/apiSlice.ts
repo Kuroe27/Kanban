@@ -55,7 +55,7 @@ const signupMutation = () => {
   const { setUser } = useStore();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: async (newUser: user) => {
+    mutationFn: async (newUser: newUser) => {
       try {
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
