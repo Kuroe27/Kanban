@@ -14,7 +14,7 @@ const generateToken = (res: Response, id: any) => {
 
   const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== "development",
+    secure: true,
     sameSite: "none",
     maxAge: 30 * 24 * 60 * 1000,
   };

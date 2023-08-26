@@ -83,7 +83,10 @@ const Login = () => {
               </button>
             )}
 
-            <button className=" bg-gray-100 text-lg  w-full p-2 rounded-lg mb-2  text-gray-900">
+            <button
+              className=" bg-gray-100 text-lg  w-full p-2 rounded-lg mb-2  text-gray-900"
+              onClick={() => navigate("/signup")}
+            >
               Sign up
             </button>
           </div>
