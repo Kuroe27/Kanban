@@ -10,6 +10,7 @@ const generateToken = (res: Response, id: any) => {
     secure: true,
     sameSite: "none",
     maxAge: 30 * 24 * 60 * 1000,
+    path: "/",
   };
 
   res.cookie("jwt", token, cookieOptions);
