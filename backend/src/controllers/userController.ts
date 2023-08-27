@@ -3,25 +3,8 @@
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import jwt from "jsonwebtoken";
 import User from "../model/userModel";
-
-// create token
-const generateToken = (res: Response, id: any) => {
-  const token = jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
-
-  const cookieOptions = {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    maxAge: 30 * 24 * 60 * 1000,
-    domain: "kanban-kuroe27.vercel.app",
-  };
-
-  res.cookie("jwt", token, cookieOptions);
-};
+import generateToken from "../utils/generateToken";
 
 // register user
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
@@ -139,4 +122,4 @@ const deleteUser = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
-export { getUser, loginUser, logoutUser, registerUser, updateUser, deleteUser };
+export { deleteUser, getUser, loginUser, logoutUser, registerUser, updateUser };
