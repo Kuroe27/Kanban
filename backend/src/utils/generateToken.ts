@@ -10,8 +10,6 @@ const generateToken = (res: Response, id: any) => {
     secure: true,
     sameSite: "none",
     maxAge: 30 * 24 * 60 * 1000,
-    domain: ".kanban-kuroe27.vercel.app",
-    path: "/api",
   };
 
   res.cookie("jwt", token, cookieOptions);
