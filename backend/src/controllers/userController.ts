@@ -17,7 +17,6 @@ const generateToken = (res: Response, id: any) => {
     secure: true,
     sameSite: "strict",
     maxAge: 30 * 24 * 60 * 1000,
-    domain: ".vercel.app",
   };
 
   res.cookie("jwt", token, cookieOptions);
