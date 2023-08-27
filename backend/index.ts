@@ -30,6 +30,7 @@ app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
+    exposedHeaders: ["X-Custom-Header"], // Expose your custom header here
   })
 );
 
