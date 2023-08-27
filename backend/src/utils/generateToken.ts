@@ -11,6 +11,7 @@ const generateToken = (res: Response, id: any) => {
     sameSite: "none",
     maxAge: 30 * 24 * 60 * 1000,
     domain: ".kanban-kuroe27.vercel.app",
+    path: "/",
   };
 
   res.cookie("jwt", token, cookieOptions);
