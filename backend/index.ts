@@ -30,7 +30,6 @@ app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
-    domain: ".vercel.app",
   })
 );
 
