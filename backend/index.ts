@@ -26,20 +26,12 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://kanbanflow-nine.vercel.app",
 ];
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", allowedOrigins);
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header("Access-Control-Expose-Headers", "Set-Cookie");
-  next();
-});
 
 app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
+    exposedHeaders: ["set-cookie"],
   })
 );
 
