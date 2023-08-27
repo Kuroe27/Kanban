@@ -36,6 +36,13 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+
 // Routes
 app.use("/api/users", userRouter);
 app.use("/api/status", statusRouter);
