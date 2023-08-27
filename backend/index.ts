@@ -20,19 +20,21 @@ const _dirname = __dirname;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+// Enable CORS middleware
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
   "https://kanbanflow-nine.vercel.app",
 ];
-
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-    exposedHeaders: ["X-Custom-Header"], // Expose your custom header here
-  })
-);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", allowedOrigins);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Expose-Headers", "Set-Cookie");
+  next();
+});
 
 // Routes
 app.use("/api/users", userRouter);
