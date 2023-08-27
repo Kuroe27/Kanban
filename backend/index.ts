@@ -13,6 +13,7 @@ connectDB();
 
 const port = process.env.PORT;
 const app = express();
+app.set("trust proxy", 1);
 const _dirname = __dirname;
 
 // middleware
