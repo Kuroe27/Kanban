@@ -13,6 +13,7 @@ const generateToken = (res: Response, id: any) => {
   };
 
   res.cookie("jwt", token, cookieOptions);
+  console.log("Token generated and cookie set:", token);
 };
 
 export default generateToken;
