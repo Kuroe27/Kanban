@@ -27,9 +27,6 @@ const loginMutation = () => {
 
         const res = await axios.post(`${API_URL}/login`, user, {
           withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
         });
 
         if (res.data) {
