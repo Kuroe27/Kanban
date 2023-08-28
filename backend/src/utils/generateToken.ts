@@ -11,7 +11,7 @@ const generateToken = (res: Response, id: any) => {
     sameSite: "none",
     maxAge: 30 * 24 * 60 * 1000,
     path: "/",
-    domain: ".kanbanflow.tech",
+    domain: ".tech",
   };
 
   res.cookie("jwt", token, cookieOptions);
