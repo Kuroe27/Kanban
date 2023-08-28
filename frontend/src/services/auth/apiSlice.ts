@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useStore from "../../store";
 import { useNavigate } from "react-router-dom";
-const API_URL = "https://kanban-kuroe27.vercel.app/api/users";
+const API_URL = "https://www.api.kanbanflow.tech/api/users";
 
 interface user {
   email: string;
