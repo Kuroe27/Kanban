@@ -26,6 +26,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://kanbanflow-nine.vercel.app",
   "https://www.kanbanflow.tech",
+  "https://www.app.kanbanflow.tech",
 ];
 
 app.use(
