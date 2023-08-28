@@ -1,5 +1,3 @@
-import { error } from "console";
-
 const errorHandler = (error, req, res, next) => {
   const statusCode = res.statusCode ? res.statusCode : 500;
 
