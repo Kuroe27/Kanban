@@ -33,7 +33,7 @@ export type AuthProps = {
   email?: string;
 };
 type Actions = {
-  setUser: (user: string) => void;
+  setUser: (user: AuthProps[] | []) => void;
   addTodo: (text: string) => void;
   deleteTodo: (id: string) => void;
   updateTodo: (id: string, newText: string) => void;
@@ -90,7 +90,7 @@ const useStore = create<TodoStore & Actions>()(
       showNotice: false,
       showSpan: false,
     },
-    setUser: () => {
+    setUser: (user) => {
       set(() => ({
         auth: user,
       }));

@@ -4,7 +4,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useStore from "../../store";
 import { useNavigate } from "react-router-dom";
-const API_URL = "https://www.api.kanbanflow.tech/api/users";
+const API_URL =
+  import.meta.env.VITE_ENV !== "development"
+    ? "https://www.api.kanbanflow.tech/api/users"
+    : "http://localhost:3000/api/users";
 
 interface user {
   email: string;
