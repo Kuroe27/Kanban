@@ -15,7 +15,7 @@ interface user {
 }
 
 interface newUser {
-  userName: string;
+  name: string;
   email: string;
   password: string;
 }
@@ -23,6 +23,7 @@ interface newUser {
 const loginMutation = () => {
   const { setUser } = useStore();
   const navigate = useNavigate();
+
   return useMutation({
     mutationFn: async (user: user) => {
       try {
@@ -62,7 +63,7 @@ const signupMutation = () => {
       try {
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        const res = await axios.post(`${API_URL}/signup`, newUser);
+        const res = await axios.post(`${API_URL} `, newUser);
         if (res.data) {
           localStorage.setItem("user", JSON.stringify(res.data));
           return res.data;

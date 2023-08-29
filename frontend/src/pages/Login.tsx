@@ -26,7 +26,7 @@ const Login = () => {
 
   return (
     <div className="min-h-[100vh]">
-      <form className="  text-gray-300 p-10">
+      <form className="  text-gray-300 p-10 text-center">
         <div className="flex flex-col justify-center items-center min-h-[100vh] ">
           <h1 className="text-3xl text-gray-50 my-5  font-semibold ">
             Login to KanbanFlow
@@ -83,12 +83,12 @@ const Login = () => {
               </button>
             )}
 
-            <button
-              className=" bg-gray-100 text-lg  w-full p-2 rounded-lg mb-2  text-gray-900"
+            <a
               onClick={() => navigate("/signup")}
+              className="w-full hover:cursor-pointer hover:text-gray-50"
             >
-              Sign up
-            </button>
+              Don't have an account?{" "}
+            </a>
           </div>
         </div>
       </form>
