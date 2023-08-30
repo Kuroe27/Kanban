@@ -34,6 +34,7 @@ export type AuthProps = {
 };
 type Actions = {
   setUser: (user: AuthProps[] | []) => void;
+  logoutUser: () => void;
   addTodo: (text: string) => void;
   deleteTodo: (id: string) => void;
   updateTodo: (id: string, newText: string) => void;
@@ -47,7 +48,7 @@ type Actions = {
 };
 
 type TodoStore = {
-  auth: AuthProps[] | [];
+  auth: AuthProps[] | null;
   todos: TodoProps[] | [];
   status: StatusProps[] | [];
   modal: ModalProps;
@@ -94,6 +95,12 @@ const useStore = create<TodoStore & Actions>()(
       set(() => ({
         auth: user,
       }));
+    },
+    logoutUser: () => {
+      set(() => ({
+        auth: null,
+      }));
+      localStorage.removeItem("user");
     },
     addTodo: (text) => {
       set(

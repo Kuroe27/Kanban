@@ -85,10 +85,41 @@ const signupMutation = () => {
     },
   });
 };
+const logoutMutation = () => {
+  const { logoutUser } = useStore();
 
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: async () => {
+      try {
+        const res = await axios.post(`${API_URL}/logout`, null, {
+          withCredentials: true,
+        });
+
+        const { message } = res.data;
+        toast(message);
+        return res;
+      } catch (error: any) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(`Signup error: ${message}`);
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      navigate("/login");
+      logoutUser();
+    },
+  });
+};
 const apiSlice = {
   loginMutation,
   signupMutation,
+  logoutMutation,
 };
 
 export default apiSlice;

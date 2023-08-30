@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiSlice from "../services/auth/apiSlice";
 import useStore from "../store";
-import { AiFillEye } from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const SignUp = () => {
   const [name, setUserName] = useState("");
@@ -11,10 +11,10 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const signupMutation = apiSlice.signupMutation();
   const [error, setError] = useState(false);
-  const [show, setShow] = useState(false);
+  const [toggleShowPassword, setShowPassword] = useState(false);
+  const [toggleShowConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const { auth } = useStore();
-  console.log(show);
   useEffect(() => {
     if (auth) {
       navigate("/");
@@ -47,60 +47,71 @@ const SignUp = () => {
           <div className="div max-w-[320px] mb-52">
             <input
               type="text"
-              className=" bg-gray-800 border-2 border-gray-200 text-1xl p-2 rounded-md mb-2 w-full placeholder-text-xl"
+              className=" bg-gray-800 border-2 border-gray-200 text-1xl p-2 rounded-md mb-2 w-full "
               placeholder="Username"
               value={name}
               onChange={(e) => setUserName(e.target.value)}
             />
             <input
               type="text"
-              className=" bg-gray-800 border-2 border-gray-200 text-1xl p-2 rounded-md mb-2 w-full placeholder-text-xl"
+              className=" bg-gray-800 border-2 border-gray-200 text-1xl p-2 rounded-md mb-2 w-full "
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <div className="w-full flex items-center bg-gray-800 border-2 border-gray-200 text-2xl p-1 rounded-md mb-2 placeholder-text-xl justify-between">
+            <div className="w-full flex items-center bg-gray-800 border-2 border-gray-200  p-1 rounded-md mb-2  justify-between">
               <input
-                type={!show ? "password" : "text"}
+                type={!toggleShowPassword ? "password" : "text"}
                 className=" bg-transparent outline-none w-full mr-2"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <AiFillEye
-                className="mr-2"
-                onClick={(e: React.FormEvent) => {
-                  e.preventDefault();
-                  setShow(true);
-                }}
-              />
+              {!toggleShowPassword ? (
+                <AiFillEye
+                  className="mr-2"
+                  onClick={(e: React.FormEvent) => {
+                    e.preventDefault();
+                    setShowPassword(true);
+                  }}
+                />
+              ) : (
+                <AiFillEyeInvisible
+                  className="mr-2"
+                  onClick={(e: React.FormEvent) => {
+                    e.preventDefault();
+                    setShowPassword(false);
+                  }}
+                />
+              )}
             </div>
 
-            <div className="w-full flex items-center bg-gray-800 border-2 border-gray-200 text-2xl p-1 rounded-md mb-2 placeholder-text-xl justify-between">
+            <div className="w-full flex items-center bg-gray-800 border-2 border-gray-200  p-1 rounded-md mb-2  justify-between">
               <input
-                type={!show ? "password" : "text"}
+                type={!toggleShowConfirmPassword ? "password" : "text"}
                 className=" bg-transparent outline-none w-full mr-2"
-                placeholder="Password"
-                value={password}
+                placeholder="Confirm Password"
+                value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
-              <AiFillEye
-                className="mr-2"
-                onClick={(e: React.FormEvent) => {
-                  e.preventDefault();
-                  setShow(true);
-                }}
-              />
+              {!toggleShowConfirmPassword ? (
+                <AiFillEye
+                  className="mr-2"
+                  onClick={(e: React.FormEvent) => {
+                    e.preventDefault();
+                    setShowConfirmPassword(true);
+                  }}
+                />
+              ) : (
+                <AiFillEyeInvisible
+                  className="mr-2"
+                  onClick={(e: React.FormEvent) => {
+                    e.preventDefault();
+                    setShowConfirmPassword(false);
+                  }}
+                />
+              )}
             </div>
-
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setShow(false);
-              }}
-            >
-              as
-            </button>
 
             {error ? (
               <p className="text-red-500 text-start mb-2">
