@@ -68,7 +68,13 @@ const getUser = asyncHandler(async (req: Request, res: Response) => {
 const logoutUser = (req: Request, res: Response) => {
   const cookieOptions = {
     httpOnly: true,
+    secure: true,
     expires: new Date(0),
+    path: "/",
+    domain:
+      process.env.NODE_ENV !== "development"
+        ? ".kanbanflow.tech"
+        : ".localhost",
   };
 
   res.cookie("jwt", "", cookieOptions);
@@ -112,7 +118,13 @@ const deleteUser = asyncHandler(async (req: Request, res: Response) => {
 
   const cookieOptions = {
     httpOnly: true,
+    secure: true,
     expires: new Date(0),
+    path: "/",
+    domain:
+      process.env.NODE_ENV !== "development"
+        ? ".kanbanflow.tech"
+        : ".localhost",
   };
 
   res.cookie("jwt", "", cookieOptions);
