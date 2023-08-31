@@ -6,6 +6,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import PrivateRoute from "./components/Routes/PrivateRoute";
+import Settings from "./pages/Settings";
 const App = () => {
   return (
     <>
@@ -14,6 +15,8 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/account" element={<Settings />} />
+
           <Route path="/" element={<PrivateRoute />}>
             <Route path="/" element={<Dashboard />} />
           </Route>

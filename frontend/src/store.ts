@@ -28,12 +28,12 @@ export type EditStatusProps = {
 };
 
 export type AuthProps = {
-  id?: string;
-  name?: string;
-  email?: string;
+  id: string;
+  name: string;
+  email: string;
 };
 type Actions = {
-  setUser: (user: AuthProps[] | []) => void;
+  setUser: (user: AuthProps) => void;
   logoutUser: () => void;
   addTodo: (text: string) => void;
   deleteTodo: (id: string) => void;
@@ -48,7 +48,7 @@ type Actions = {
 };
 
 type TodoStore = {
-  auth: AuthProps[] | null;
+  auth: AuthProps | null;
   todos: TodoProps[] | [];
   status: StatusProps[] | [];
   modal: ModalProps;
@@ -92,8 +92,11 @@ const useStore = create<TodoStore & Actions>()(
       showSpan: false,
     },
     setUser: (user) => {
-      set(() => ({
-        auth: user,
+      set((state) => ({
+        auth: {
+          ...state.auth,
+          ...user,
+        },
       }));
     },
     logoutUser: () => {

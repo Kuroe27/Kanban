@@ -22,6 +22,7 @@ export default {
           100: '#fafafa',
           50: '#dedfe0',
         },
+
       },
     },
   },
