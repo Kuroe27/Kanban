@@ -11,7 +11,7 @@ const Settings = () => {
   const [newName, setNewName] = useState(auth.name);
   const [newEmail, setNewEmail] = useState(auth.email);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     updateMutation.mutateAsync({
       name: newName,
