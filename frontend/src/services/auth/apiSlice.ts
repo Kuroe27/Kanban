@@ -15,9 +15,9 @@ interface user {
 }
 
 interface newUser {
-  name: string;
-  email: string;
-  password: string;
+  name?: string;
+  email?: string;
+  password?: string;
 }
 
 const loginMutation = () => {
@@ -116,10 +116,46 @@ const logoutMutation = () => {
     },
   });
 };
+
+const UpdateMutation = () => {
+  const { setUser } = useStore();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: async (user: newUser) => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        const res = await axios.put(`${API_URL}/updateuser`, user, {
+          withCredentials: true,
+        });
+
+        if (res.data) {
+          localStorage.setItem("user", JSON.stringify(res.data));
+          return res.data;
+        }
+      } catch (error: any) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(`Login error: ${message}`);
+        throw error;
+      }
+    },
+    onSuccess: (data) => {
+      setUser(data);
+      navigate("/");
+    },
+  });
+};
 const apiSlice = {
   loginMutation,
   signupMutation,
   logoutMutation,
+  UpdateMutation,
 };
 
 export default apiSlice;
