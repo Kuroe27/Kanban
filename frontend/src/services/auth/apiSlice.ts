@@ -119,7 +119,6 @@ const logoutMutation = () => {
 
 const UpdateMutation = () => {
   const { setUser } = useStore();
-  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: async (user: newUser) => {
@@ -147,7 +146,7 @@ const UpdateMutation = () => {
     },
     onSuccess: (data) => {
       setUser(data);
-      navigate("/");
+      toast(data.message);
     },
   });
 };
