@@ -92,10 +92,6 @@ const updateUser = asyncHandler(async (req: Request, res: Response) => {
   user.name = req.body.name || user.name;
   user.email = req.body.email || user.email;
 
-  if (req.body.password) {
-    user.password = req.body.password;
-  }
-
   const updateUser = await user.save();
 
   res.status(200).json({
@@ -103,6 +99,37 @@ const updateUser = asyncHandler(async (req: Request, res: Response) => {
     email: updateUser.email,
     name: updateUser.name,
     message: "Updated succesfully",
+  });
+});
+const updatePasword = asyncHandler(async (req: Request, res: Response) => {
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("Error Not found");
+  }
+
+  if (!req.body.password || !req.body.newPassword) {
+    res.status(400);
+    throw new Error("Please complete all fields");
+  }
+
+  const isPasswordMatch = await bcrypt.compare(
+    req.body.password,
+    user.password
+  );
+
+  if (!isPasswordMatch) {
+    res.status(400);
+    throw new Error("Current password is incorrect");
+  }
+
+  user.password = req.body.newPassword;
+
+  await user.save();
+
+  res.status(200).json({
+    message: "Password updated successfully",
   });
 });
 
@@ -134,4 +161,12 @@ const deleteUser = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
-export { deleteUser, getUser, loginUser, logoutUser, registerUser, updateUser };
+export {
+  deleteUser,
+  getUser,
+  loginUser,
+  logoutUser,
+  registerUser,
+  updateUser,
+  updatePasword,
+};

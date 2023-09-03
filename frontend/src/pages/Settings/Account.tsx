@@ -19,7 +19,7 @@ const InputField = ({
     <span className="font-extralight mb-2 text-gray-350">{placeholder}</span>
     <input
       type="text"
-      className="input w-60 border-gray-700 border"
+      className="input w-60 border-gray-700 border bg-gray-900"
       value={value}
       onChange={onChange}
     />
