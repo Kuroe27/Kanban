@@ -1,22 +1,29 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { shallow } from "zustand/shallow";
-import useStore, { StatusProps } from "../../store";
+import statusSlice from "../../services/auth/statusSlice";
+import useStore from "../../store";
 import Buttons from "../Buttons/Buttons";
 import DeleteBtn from "../Buttons/DeleteBtn";
 import Notice from "../Icons/Notice";
 import AddTodo from "./AddTodo";
 import Todo from "./Todo";
 
-interface ColumnProps {
-  status: StatusProps;
+interface Status {
+  status: {
+    _id: string;
+    statusName: string;
+  };
 }
-function Column({ status }: ColumnProps) {
-  const [newStatus, setNewStatus] = useState(status.name);
+
+function Column({ status }: Status) {
+  const deleteStatus = statusSlice.deleteStatusMutation();
+
+  const [newStatus, setNewStatus] = useState(status.statusName);
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const todos = useStore(
-    (state) => state.todos.filter((todo) => todo.status === status.name),
+    (state) => state.todos.filter((todo) => todo.status === status.statusName),
     shallow
   );
 
@@ -26,16 +33,16 @@ function Column({ status }: ColumnProps) {
     updateStatus,
     updateStatusName,
     setEditStatus,
-    status: statuss,
     editStatus,
   } = useStore();
 
   const handleConfirm = () => {
     if (newStatus.trim() === "") {
-      setNewStatus(status.name);
+      setNewStatus(status.statusName);
     }
     if (!editStatus.showNotice) {
-      updateStatusName(status.id, newStatus);
+      // Assuming you have a function named updateStatusName that takes id and newStatus as arguments
+      updateStatusName(status._id, newStatus);
       setEditStatus({ id: "" });
     } else {
       setEditStatus({ showSpan: true });
@@ -44,7 +51,7 @@ function Column({ status }: ColumnProps) {
   };
 
   const handleCancel = () => {
-    setNewStatus(status.name);
+    setNewStatus(status.statusName);
   };
 
   const handleBlur = () => {
@@ -54,9 +61,10 @@ function Column({ status }: ColumnProps) {
         showNotice: false,
         showSpan: true,
       });
-      setNewStatus(status.name);
+      setNewStatus(status.statusName);
     } else {
-      updateStatusName(status.id, newStatus);
+      // Assuming you have a function named updateStatusName that takes id and newStatus as arguments
+      updateStatusName(status._id, newStatus);
       setEditStatus({ id: "" });
     }
     setIsEditing(false);
@@ -66,23 +74,6 @@ function Column({ status }: ColumnProps) {
     setEditStatus({ id });
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const currentStatus = statuss.find(
-      (currentstatus) =>
-        currentstatus.name.toLowerCase() === e.target.value.toLowerCase()
-    );
-    if (currentStatus && currentStatus.name !== status.name) {
-      setEditStatus({ showNotice: true });
-    } else {
-      setEditStatus({ showNotice: false });
-    }
-    setNewStatus(e.target.value);
-
-    setEditStatus({
-      showNotice: currentStatus && currentStatus.name !== status.name,
-    });
-    setNewStatus(e.target.value);
-  };
   return (
     <section
       className="column"
@@ -91,7 +82,7 @@ function Column({ status }: ColumnProps) {
       }}
       onDrop={(_e) => {
         if (draggedTodo !== null) {
-          updateStatus(draggedTodo, status.name);
+          updateStatus(draggedTodo, status.statusName);
         }
         setDraggedTodo(null);
         console.log(draggedTodo);
@@ -102,16 +93,15 @@ function Column({ status }: ColumnProps) {
           ref={inputRef}
           className="input truncate"
           value={newStatus}
-          onChange={(e) => handleChange(e)}
           onKeyDown={() => setIsEditing(true)}
           onBlur={handleBlur}
-          onClick={() => handleClick(status.id)}
+          onClick={() => handleClick(status._id)}
         />
 
-        {editStatus.id === status.id && <Notice />}
+        {editStatus.id === status._id && <Notice />}
         {!isEditing && (
           <DeleteBtn
-            id={status.id}
+            id={status._id}
             deleteFunction={"status"}
             activateModal={false}
           />
@@ -124,10 +114,17 @@ function Column({ status }: ColumnProps) {
         isEditing={isEditing}
       />
 
+      <button
+        onClick={() => {
+          deleteStatus.mutateAsync(status._id);
+        }}
+      >
+        del
+      </button>
       {todos.map((todo) => (
         <Todo key={todo.id} todo={todo} />
       ))}
-      {status.name === "Todo" && <AddTodo />}
+      <AddTodo />
     </section>
   );
 }

@@ -47,7 +47,7 @@ const Todo = ({ todo }: { todo: TodoProps }) => {
 
   return (
     <div
-      className={`flex flex-col w-full mb-2 bg-gray-850 p-1 border-2 border-gray-700 rounded-md  shadow-md text-gray-100 hover:border-gray-400 hover:bg-gray-450  `}
+      className={`flex flex-col w-full mb-2 bg-gray-850 p-1 border-2 border-gray-700 rounded-md  shadow-md text-gray-100 hover:border-gray-400 hover:bg-gray-450 overflow-hidden  `}
       key={todo.id}
       draggable
       onDragStart={handleDrag}
@@ -56,7 +56,7 @@ const Todo = ({ todo }: { todo: TodoProps }) => {
         <TextareaAutosize
           name="text"
           ref={inputRef}
-          className={` input ${max ? "  outline-red-600" : ""}`}
+          className={` input ${max ? "  outline-red-600" : ""} overflow-hidden`}
           value={newText}
           onChange={(e) => handleChange(e)}
           onKeyDown={() => setIsEditing(true)}

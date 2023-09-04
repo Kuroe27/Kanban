@@ -24,12 +24,14 @@ const ListItem = ({ label, to }: { label: string; to: string }) => {
 
 const Settings = () => {
   return (
-    <div className="flex justify-between h-screen max-w-7xl m-auto text-gray-350 p-5 overflow-auto">
-      <ul className="w-1/4 max-w-[250px]">
-        <ListItem label={"General"} to="/account" />
-        <ListItem label={"Change Password"} to="/account/password" />
-      </ul>
-      <main className="w-3/4 overflow-hidden">
+    <div className="flex  justify-between max-w-7xl m-auto text-gray-350 p-5 overflow-auto">
+      <section className="flex flex-col w-1/4 max-w-[250px] ">
+        <ul className="flex flex-col  ">
+          <ListItem label={"General"} to="/account" />
+          <ListItem label={"Change Password"} to="/account/password" />
+        </ul>
+      </section>
+      <main className="w-3/4 ">
         <Routes>
           <Route path="/" element={<Account />} />
           <Route path="/password" element={<ChangePass />} />

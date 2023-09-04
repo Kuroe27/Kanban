@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import apiSlice from "../services/auth/apiSlice";
+import apiSlice from "../services/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import useStore from "../store";
 import LoadingBtn from "../components/Buttons/LoadingBtn";
@@ -26,9 +26,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-[100vh]">
+    <div className="">
       <form className="  text-gray-300 p-10 text-center">
-        <div className="flex flex-col justify-center items-center min-h-[100vh] ">
+        <div className="flex flex-col justify-center items-center  ">
           <h1 className="text-3xl text-gray-50 my-5  font-semibold ">
             Login to KanbanFlow
           </h1>

@@ -25,7 +25,7 @@ const createTask = asyncHandler(async (req: Request, res: Response) => {
     status,
   });
 
-  res.status(201).json(newTask);
+  res.status(201).json({ message: "Task created successfully", task: newTask });
 });
 
 // get tasks

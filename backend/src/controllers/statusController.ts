@@ -14,7 +14,14 @@ const createStatus = asyncHandler(async (req: Request, res: Response) => {
     user: req.user.id,
   });
 
-  res.status(200).json(newStatus);
+  res.status(201).json({
+    user: newStatus.user,
+    statusName: newStatus.statusName,
+    _id: newStatus._id,
+    createdAt: newStatus.createdAt,
+    updatedAt: newStatus.updatedAt,
+    message: "Status created",
+  });
 });
 
 const getStatus = asyncHandler(async (req: Request, res: Response) => {

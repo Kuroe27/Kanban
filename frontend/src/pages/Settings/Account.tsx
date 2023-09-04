@@ -1,30 +1,9 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import LoadingBtn from "../../components/Buttons/LoadingBtn";
-import apiSlice from "../../services/auth/apiSlice";
+import apiSlice from "../../services/auth/authSlice";
 import useStore from "../../store";
-interface FormFieldProps {
-  label: string;
-  placeholder: string;
-  value: string;
-  onChange: any;
-}
-const InputField = ({
-  label,
-  value,
-  onChange,
-  placeholder,
-}: FormFieldProps) => (
-  <div className="flex flex-col p-5">
-    <span className="text-white text-xl mb-2">{label}</span>
-    <span className="font-extralight mb-2 text-gray-350">{placeholder}</span>
-    <input
-      type="text"
-      className="input w-60 border-gray-700 border bg-gray-900"
-      value={value}
-      onChange={onChange}
-    />
-  </div>
-);
+import InputField from "../../components/Inputs/InputField";
+
 const Account = () => {
   const { auth } = useStore();
 
@@ -54,7 +33,7 @@ const Account = () => {
   };
   return (
     <>
-      <div className="about ">
+      <div className="about  ">
         <h1 className="text-4xl text-white py-2 text font-light">About</h1>
         <span className="font-extralight text-gray-400">
           Set your profile name and details. Providing additional information
@@ -71,6 +50,7 @@ const Account = () => {
         </h1>
         <div className="border-gray-700 bg-gray-800 border w-full rounded-md mb-3">
           <InputField
+            type="text"
             label="Name"
             value={newName}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -79,6 +59,7 @@ const Account = () => {
             placeholder="Please enter your full name, or a display name you are comfortable with."
           />
           <InputField
+            type="text"
             label="Email"
             value={newEmail}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>

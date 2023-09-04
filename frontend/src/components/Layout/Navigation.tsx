@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useStore from "../../store";
-import apiSlice from "../../services/auth/apiSlice";
+import apiSlice from "../../services/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const Navigation = () => {
@@ -13,8 +13,11 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="flex h-16 text-center items-center px-5 bg-gray-900 border-b-2 border-gray-700 justify-between">
-      <h2 className="text-2xl text-white font-mono cursor-pointer">
+    <nav className="h-16 flex text-center items-center px-5 bg-gray-900 border-b-2 border-gray-700 justify-between sticky top-0 z-50">
+      <h2
+        className="text-2xl text-white font-mono cursor-pointer"
+        onClick={() => navigate("/")}
+      >
         KanbanFlow
       </h2>
       {auth ? (
