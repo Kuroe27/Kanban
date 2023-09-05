@@ -5,9 +5,9 @@ import { AiOutlinePlus } from "react-icons/ai";
 import statusSlice from "../../services/auth/statusSlice";
 
 const AddColumn = () => {
-  const { createStatus, status, setEditStatus, editStatus } = useStore();
+  const { status, setEditStatus, editStatus } = useStore();
   const [statusName, setStatusName] = useState("");
-  const createStatuss = statusSlice.createStatusMutation();
+  const createStatus = statusSlice.createStatusMutation();
 
   const statusData = {
     statusName,
@@ -15,8 +15,7 @@ const AddColumn = () => {
   const handleCreateStatus = () => {
     if (statusName.trim() === "") return;
     if (!editStatus.showNotice) {
-      createStatus(statusName);
-      createStatuss.mutateAsync(statusData);
+      createStatus.mutateAsync(statusData);
     } else {
       setEditStatus({
         showSpan: true,

@@ -134,40 +134,32 @@ const useStore = create<TodoStore & Actions>()(
         "status updated"
       );
     },
-    // createStatus: (name) => {
-    //   set(
-    //     (state) => ({
-    //       status: [...state.status, { id: uuidv4(), name }],
-    //     }),
-    //     false,
-    //     "New column create successfully"
-    //   );
-    // },
-    // deleteStatus: (id) => {
-    //   set(
-    //     (state) => ({
-    //       status: state.status.filter((s) => s.id !== id),
-    //     }),
-    //     false,
-    //     "columnDeleted"
-    //   );
-    // },
-    // updateStatusName: (id, newStatus) => {
-    //   set(
-    //     (state) => ({
-    //       status: state.status.map((s) =>
-    //         s.id === id ? { ...s, name: newStatus } : s
-    //       ),
-    //       todos: state.todos.map((todo) =>
-    //         todo.status === state.status.find((s) => s.id === id)?.name
-    //           ? { ...todo, status: newStatus }
-    //           : todo
-    //       ),
-    //     }),
-    //     false,
-    //     "update status name"
-    //   );
-    // },
+
+    deleteStatus: (id) => {
+      set(
+        (state) => ({
+          status: state.status.filter((s) => s.id !== id),
+        }),
+        false,
+        "columnDeleted"
+      );
+    },
+    updateStatusName: (id, newStatus) => {
+      set(
+        (state) => ({
+          status: state.status.map((s) =>
+            s.id === id ? { ...s, name: newStatus } : s
+          ),
+          todos: state.todos.map((todo) =>
+            todo.status === state.status.find((s) => s.id === id)?.name
+              ? { ...todo, status: newStatus }
+              : todo
+          ),
+        }),
+        false,
+        "update status name"
+      );
+    },
     openModal: (modal) => {
       set(
         (state) => ({

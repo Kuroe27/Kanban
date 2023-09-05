@@ -7,7 +7,7 @@ export const API_URL =
     ? "https://www.api.kanbanflow.tech/api/status"
     : "http://localhost:3000/api/status";
 export interface Status {
-  _id: string;
+  _id?: string;
   statusName: string;
 }
 const createStatusMutation = () => {
@@ -16,6 +16,18 @@ const createStatusMutation = () => {
     mutationFn: async (statusName: Status) => {
       const resData = await sendHttpRequest("post", `${API_URL}`, statusName);
       return resData;
+    },
+    onMutate: async (statusName) => {
+      await queryClient.cancelQueries(["status"]);
+
+      const prevStatus = queryClient.getQueryData<Status[]>(["status"]);
+      queryClient.setQueryData(["status"], (old: Status[] | undefined) =>
+        old ? [...old, statusName] : [statusName]
+      );
+      return { prevStatus };
+    },
+    onError: (context: any) => {
+      queryClient.setQueryData(["status"], context.prevStatus);
     },
     onSuccess: () => {
       // Trigger a refetch of the status data after a successful mutation
@@ -28,6 +40,7 @@ const createStatusMutation = () => {
 };
 
 const deleteStatusMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (statusId: string) => {
       const resData = await sendHttpRequest(
@@ -37,7 +50,21 @@ const deleteStatusMutation = () => {
       );
       return resData;
     },
-    onSuccess(resData) {
+    onMutate: async (statusId: string) => {
+      await queryClient.cancelQueries(["status"]);
+
+      const prevStatus = queryClient.getQueryData<Status[]>(["status"]);
+      const updatedStatus = prevStatus?.filter(
+        (status) => status._id !== statusId
+      );
+      queryClient.setQueryData(["status"], updatedStatus);
+      return { prevStatus };
+    },
+    onError: (context: any) => {
+      queryClient.setQueryData(["status"], context.prevStatus);
+    },
+    onSuccess: (resData) => {
+      queryClient.invalidateQueries(["status"]);
       toast(resData.message);
     },
   });
