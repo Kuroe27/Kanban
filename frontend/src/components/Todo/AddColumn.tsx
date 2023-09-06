@@ -2,20 +2,15 @@ import { ChangeEvent, useEffect, useState } from "react";
 import useStore from "../../store";
 import Notice from "../Icons/Notice";
 import { AiOutlinePlus } from "react-icons/ai";
-import statusSlice from "../../services/auth/statusSlice";
 
 const AddColumn = () => {
-  const { status, setEditStatus, editStatus } = useStore();
+  const { createStatus, status, setEditStatus, editStatus } = useStore();
   const [statusName, setStatusName] = useState("");
-  const createStatus = statusSlice.createStatusMutation();
 
-  const statusData = {
-    statusName,
-  };
   const handleCreateStatus = () => {
     if (statusName.trim() === "") return;
     if (!editStatus.showNotice) {
-      createStatus.mutateAsync(statusData);
+      createStatus(statusName);
     } else {
       setEditStatus({
         showSpan: true,
@@ -27,8 +22,8 @@ const AddColumn = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const currentStatus = status.find(
-      (currentstatus) =>
-        currentstatus.name.toLowerCase() === e.target.value.toLowerCase()
+      (currentStatus) =>
+        currentStatus.statusName.toLowerCase() === e.target.value.toLowerCase()
     );
 
     setEditStatus({

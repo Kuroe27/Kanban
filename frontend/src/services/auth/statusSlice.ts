@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { sendHttpRequest } from "./authSlice";
+import useStore from "../../store";
 
 export const API_URL =
   import.meta.env.VITE_ENV !== "development"
@@ -71,11 +72,16 @@ const deleteStatusMutation = () => {
 };
 
 const getStatus = () => {
+  const { setStatus } = useStore();
+
   return useQuery({
     queryKey: ["status"],
     queryFn: async () => {
       const resData = await sendHttpRequest("get", `${API_URL}`, null);
       return resData;
+    },
+    onSuccess: (resData) => {
+      setStatus(resData);
     },
   });
 };

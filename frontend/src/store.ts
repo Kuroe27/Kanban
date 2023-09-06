@@ -11,9 +11,8 @@ export type TodoProps = {
 };
 
 export type StatusProps = {
-  statusName(statusName: any): [any, any];
-  id: string;
-  name: string;
+  id?: string;
+  statusName: string;
 };
 
 export type ModalProps = {
@@ -46,6 +45,7 @@ type Actions = {
   updateStatusName: (id: string, newStatus: string) => void;
   openModal: (modal: ModalProps) => void;
   setEditStatus: (editStatus: EditStatusProps) => void;
+  setStatus: (status: StatusProps) => void;
 };
 
 type TodoStore = {
@@ -93,6 +93,11 @@ const useStore = create<TodoStore & Actions>()(
       }));
       localStorage.removeItem("user");
     },
+    setStatus: (status) => {
+      set(() => ({
+        status,
+      }));
+    },
     addTodo: (text) => {
       set(
         (state) => ({
@@ -102,6 +107,7 @@ const useStore = create<TodoStore & Actions>()(
         "Todo added"
       );
     },
+
     deleteTodo: (id) => {
       set(
         (state) => ({
@@ -134,7 +140,15 @@ const useStore = create<TodoStore & Actions>()(
         "status updated"
       );
     },
-
+    createStatus: (name) => {
+      set(
+        (state) => ({
+          status: [...state.status, { id: uuidv4(), name }],
+        }),
+        false,
+        "New column create successfully"
+      );
+    },
     deleteStatus: (id) => {
       set(
         (state) => ({
@@ -160,6 +174,7 @@ const useStore = create<TodoStore & Actions>()(
         "update status name"
       );
     },
+
     openModal: (modal) => {
       set(
         (state) => ({
