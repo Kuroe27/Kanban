@@ -7,7 +7,7 @@ interface ButtonsProps {
   handleConfirm: () => void;
   handleCancel: () => void;
   handleEdit?: () => void;
-  id?: string;
+  _id?: string;
   isEditing: boolean;
   btnFunction?: string;
 }
@@ -16,7 +16,7 @@ const Buttons = ({
   handleConfirm,
   handleCancel,
   handleEdit,
-  id,
+  _id,
   isEditing,
   btnFunction,
 }: ButtonsProps) => {
@@ -30,10 +30,10 @@ const Buttons = ({
       ) : (
         <>
           <div className="flex justify-end text-xl">
-            {btnFunction === "todo" ? (
+            {btnFunction === "task" ? (
               <>
                 {handleEdit && <EditBtn handleEdit={handleEdit} />}
-                {id && <DeleteBtn id={id} deleteFunction="todo" />}
+                {_id && <DeleteBtn id={_id} deleteFunction="task" />}
               </>
             ) : null}
           </div>

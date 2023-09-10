@@ -1,59 +1,61 @@
-import { useRef, useState } from "react";
-import { shallow } from "zustand/shallow";
-import statusSlice from "../../services/auth/statusSlice";
+import { useState } from "react";
 import useStore from "../../store";
 import Buttons from "../Buttons/Buttons";
 import DeleteBtn from "../Buttons/DeleteBtn";
 import Notice from "../Icons/Notice";
 import AddTodo from "./AddTodo";
 import Todo from "./Todo";
+import statusSlice from "../../services/auth/statusSlice";
 
 interface Status {
-  status: {
-    _id: string;
-    statusName: string;
-  };
+  _id: string;
+  statusName: string;
 }
 
-function Column({ status }: Status) {
-  const deleteStatus = statusSlice.deleteStatusMutation();
+type TaskProps = {
+  _id: string;
+  taskName: string;
+  status: string;
+};
 
+function Column({
+  status,
+  taskData,
+  taskIsLoading,
+}: {
+  status: Status;
+  taskData: TaskProps[];
+  taskIsLoading: boolean;
+}) {
   const [newStatus, setNewStatus] = useState(status.statusName);
   const [isEditing, setIsEditing] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  const todos = useStore(
-    (state) => state.todos.filter((todo) => todo.status === status.statusName),
-    shallow
-  );
+  const taskDatas = taskIsLoading
+    ? []
+    : taskData.filter((task: TaskProps) => task.status === status._id);
+  // store
+  const { draggedTodo, setDraggedTodo, setEditStatus, editStatus } = useStore();
 
-  const {
-    draggedTodo,
-    setDraggedTodo,
-    updateStatus,
-    updateStatusName,
-    setEditStatus,
-    editStatus,
-  } = useStore();
-
+  const updateStatuss = statusSlice.updatedStatusMutation();
+  // update statusname confirmation
   const handleConfirm = () => {
     if (newStatus.trim() === "") {
       setNewStatus(status.statusName);
     }
     if (!editStatus.showNotice) {
-      // Assuming you have a function named updateStatusName that takes id and newStatus as arguments
-      updateStatusName(status._id, newStatus);
-      setEditStatus({ id: "" });
+      updateStatuss.mutateAsync({ statusName: newStatus });
     } else {
       setEditStatus({ showSpan: true });
       return;
     }
   };
 
+  // cancel edit/update
   const handleCancel = () => {
     setNewStatus(status.statusName);
   };
 
+  // cancel edit when not focus
   const handleBlur = () => {
     if (newStatus.trim() === "" || editStatus.showNotice) {
       setEditStatus({
@@ -63,13 +65,12 @@ function Column({ status }: Status) {
       });
       setNewStatus(status.statusName);
     } else {
-      // Assuming you have a function named updateStatusName that takes id and newStatus as arguments
-      updateStatusName(status._id, newStatus);
-      setEditStatus({ id: "" });
+      updateStatuss.mutateAsync({ statusName: newStatus });
     }
     setIsEditing(false);
   };
 
+  // setEdit id to the store
   const handleClick = (id: string) => {
     setEditStatus({ id });
   };
@@ -82,7 +83,6 @@ function Column({ status }: Status) {
       }}
       onDrop={(_e) => {
         if (draggedTodo !== null) {
-          updateStatus(draggedTodo, status.statusName);
         }
         setDraggedTodo(null);
         console.log(draggedTodo);
@@ -90,12 +90,12 @@ function Column({ status }: Status) {
     >
       <div className="title flex items-center justify-between">
         <input
-          ref={inputRef}
           className="input truncate"
           value={newStatus}
           onKeyDown={() => setIsEditing(true)}
           onBlur={handleBlur}
           onClick={() => handleClick(status._id)}
+          onChange={(e) => setNewStatus(e.target.value)}
         />
 
         {editStatus.id === status._id && <Notice />}
@@ -114,17 +114,12 @@ function Column({ status }: Status) {
         isEditing={isEditing}
       />
 
-      <button
-        onClick={() => {
-          deleteStatus.mutateAsync(status._id);
-        }}
-      >
-        del
-      </button>
-      {todos.map((todo) => (
-        <Todo key={todo.id} todo={todo} />
-      ))}
-      <AddTodo />
+      {taskIsLoading ? (
+        <p>Loading</p>
+      ) : (
+        taskDatas.map((task: TaskProps) => <Todo key={task._id} task={task} />)
+      )}
+      <AddTodo status={status._id} _id={""} taskName={""} />
     </section>
   );
 }

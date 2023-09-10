@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import Status from "../model/statusModel";
-
+import Task from "../model/taskModel";
 const createStatus = asyncHandler(async (req: Request, res: Response) => {
   const statusName = req.body;
   if (!statusName) {
@@ -39,24 +39,33 @@ const deleteStatus = asyncHandler(async (req: Request, res: Response) => {
 
   if (!status) {
     res.status(404);
-    throw new Error("Post not found");
+    throw new Error("Status not found");
   }
 
   if (!req.user) {
-    res.status(400);
+    res.status(401);
     throw new Error("User not found");
   }
 
   if (status.user.toString() !== req.user.id) {
-    res.status(401);
+    res.status(403); // Changed status code to 403 for "Forbidden"
     throw new Error("Status not authorized");
   }
 
-  await Status.deleteOne({ _id: req.params.id });
+  // Assuming you have a field in Task model called "status" that references the status
+  const tasksToDelete = await Task.find({ status: status._id });
+
+  // Delete tasks associated with the status
+  await Task.deleteMany({ status: status._id });
+
+  // Delete the status itself
+  await Status.deleteOne({ _id: status._id });
 
   res
     .status(200)
-    .json({ message: `status ${status.statusName} deleted successfully` });
+    .json({
+      message: `Status ${status.statusName} and associated tasks deleted successfully`,
+    });
 });
 
 const updateStatus = asyncHandler(async (req: Request, res: Response) => {

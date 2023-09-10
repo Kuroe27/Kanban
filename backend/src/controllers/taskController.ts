@@ -30,8 +30,8 @@ const createTask = asyncHandler(async (req: Request, res: Response) => {
 
 // get tasks
 const getTask = asyncHandler(async (req: Request, res: Response) => {
-  const tasks = await Task.find({ user: req.user.id });
-  res.status(200).json({ tasks });
+  const task = await Task.find({ user: req.user.id });
+  res.status(200).json(task);
 });
 
 // get specific task
@@ -62,9 +62,9 @@ const deleteTask = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json({ message: "Task deleted" });
 });
 
+// update Task
 const updateTask = asyncHandler(async (req: Request, res: Response) => {
   const taskId = req.params.id;
-  const { status } = req.body;
   const userId = req.user?.id;
 
   if (!mongoose.Types.ObjectId.isValid(taskId)) {
@@ -79,22 +79,28 @@ const updateTask = asyncHandler(async (req: Request, res: Response) => {
     throw new Error("Task not found");
   }
 
-  if (!mongoose.Types.ObjectId.isValid(status)) {
-    res.status(400);
-    throw new Error("Invalid status ID");
+  // Check if the "status" property exists in the request body.
+  if (req.body.status) {
+    if (!mongoose.Types.ObjectId.isValid(req.body.status)) {
+      res.status(400);
+      throw new Error("Invalid status ID");
+    }
+
+    const existingStatus = await Status.findById(req.body.status);
+    if (
+      !existingStatus ||
+      existingStatus.user.toString() !== userId ||
+      !mongoose.Types.ObjectId.isValid(req.body.status)
+    ) {
+      res.status(400);
+      throw new Error("Invalid status or status ID");
+    }
   }
 
-  const existingStatus = await Status.findById(status);
-  if (
-    !existingStatus ||
-    existingStatus.user.toString() !== userId ||
-    !mongoose.Types.ObjectId.isValid(status)
-  ) {
-    res.status(400);
-    throw new Error("Invalid status or status ID");
-  }
+  task.status = req.body.status;
+  task.taskName = req.body.taskName;
 
-  const updatedTask = await Task.findByIdAndUpdate(taskId, req.body, {
+  const updatedTask = await Task.findByIdAndUpdate(taskId, task, {
     new: true,
   });
 

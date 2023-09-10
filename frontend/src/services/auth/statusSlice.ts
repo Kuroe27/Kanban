@@ -41,6 +41,7 @@ const createStatusMutation = () => {
 };
 
 const deleteStatusMutation = () => {
+  const { openModal } = useStore();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (statusId: string) => {
@@ -59,6 +60,11 @@ const deleteStatusMutation = () => {
         (status) => status._id !== statusId
       );
       queryClient.setQueryData(["status"], updatedStatus);
+      openModal({
+        id: "",
+        activateModal: false,
+        deleteFunction: "",
+      });
       return { prevStatus };
     },
     onError: (context: any) => {
@@ -66,9 +72,48 @@ const deleteStatusMutation = () => {
     },
     onSuccess: (resData) => {
       queryClient.invalidateQueries(["status"]);
+
       toast(resData.message);
     },
   });
+};
+
+const updatedStatusMutation = () => {
+  const { editStatus } = useStore();
+  const queryClient = useQueryClient();
+  const updateMutation = useMutation({
+    mutationFn: async (statusName: Status) => {
+      const resData = await sendHttpRequest(
+        "put",
+        `${API_URL}/${editStatus.id}`,
+        statusName
+      );
+      return resData;
+    },
+    onMutate: async (statusName) => {
+      await queryClient.cancelQueries(["status", editStatus.id]);
+
+      const prevStatus = queryClient.getQueryData<Status[]>([
+        "status",
+        editStatus.id,
+      ]);
+      queryClient.setQueryData(["status", editStatus.id], statusName);
+      return { prevStatus, statusName };
+    },
+    onError: (context: any) => {
+      queryClient.setQueryData(
+        ["status", context.editStatus.id],
+        context.prevStatus
+      );
+    },
+    onSuccess: () => {
+      // Trigger a refetch of the status data after a successful mutation
+      queryClient.invalidateQueries(["status", ["status", editStatus.id]]);
+      toast("Status updated successfully");
+    },
+  });
+
+  return updateMutation;
 };
 
 const getStatus = () => {
@@ -90,4 +135,5 @@ export default {
   createStatusMutation,
   getStatus,
   deleteStatusMutation,
+  updatedStatusMutation,
 };

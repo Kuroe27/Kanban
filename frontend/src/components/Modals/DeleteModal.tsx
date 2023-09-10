@@ -1,34 +1,36 @@
 import { AiFillExclamationCircle } from "react-icons/ai";
+import statusSlice from "../../services/auth/statusSlice";
+import taskSlice from "../../services/auth/taskSlice";
 import useStore from "../../store";
 
 const DeleteModal = () => {
-  const { openModal, deleteTodo, deleteStatus, todos, status, modal } =
-    useStore();
-
+  const { openModal, task, status, modal } = useStore();
+  const deleteStatus = statusSlice.deleteStatusMutation();
+  const deleteTask = taskSlice.deleteTaskMutation();
   const findTodo = () => {
-    const todo = todos.find((todo) => todo.id === modal.id);
-    return todo ? todo.text : null;
+    const tasks = task.find((t) => t._id === modal.id);
+    return tasks ? tasks.taskName : null;
   };
 
   const todoText = findTodo();
 
   const findStatus = () => {
-    const statuss = status.find((s) => s.id === modal.id);
-    return statuss ? statuss.name : null;
+    const statuss = status.find((s) => s._id === modal.id);
+    return statuss ? statuss.statusName : null;
   };
 
   const statusText = findStatus();
 
   const handleDelete = () => {
-    if (modal.deleteFunction === "todo") {
-      deleteTodo(modal.id);
+    if (modal.deleteFunction === "task") {
+      deleteTask.mutateAsync(modal.id);
       openModal({
         id: "",
         activateModal: false,
         deleteFunction: "",
       });
     } else {
-      deleteStatus(modal.id);
+      deleteStatus.mutateAsync(modal.id);
     }
   };
   return (
@@ -37,7 +39,7 @@ const DeleteModal = () => {
         <div className="bg-gray-600 p-10 rounded-lg w-4/12">
           <h1 className="text-3xl flex items-center mb-5">
             <AiFillExclamationCircle className="text-red-500 mr-2" />
-            {modal.deleteFunction === "todo"
+            {modal.deleteFunction === "task"
               ? `Delete task "${todoText}"`
               : `Delete status "${statusText}"`}
           </h1>

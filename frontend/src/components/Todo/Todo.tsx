@@ -2,11 +2,11 @@ import { ChangeEvent, useRef, useState, useCallback } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import useStore from "../../store";
 import Buttons from "../Buttons/Buttons";
-import { TodoProps } from "../../store";
+import { TaskProps } from "../../store";
 
-const Todo = ({ todo }: { todo: TodoProps }) => {
+const Todo = ({ task }: { task: TaskProps }) => {
   const { updateTodo, setDraggedTodo, draggedTodo } = useStore();
-  const [newText, setNewText] = useState<string>(todo.text || "");
+  const [newText, setNewText] = useState<string>(task.taskName || "");
   const [isEditing, setIsEditing] = useState(false);
   const [max, setMax] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -18,16 +18,16 @@ const Todo = ({ todo }: { todo: TodoProps }) => {
   };
 
   const handleConfirm = () => {
-    updateTodo(todo.id, newText);
+    updateTodo(task._id, newText);
   };
 
   const handleBlur = () => {
     setIsEditing(false);
-    updateTodo(todo.id, newText);
+    updateTodo(task._id, newText);
   };
 
   const handleCancel = () => {
-    setNewText(todo.text);
+    setNewText(task.taskName);
   };
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -41,20 +41,20 @@ const Todo = ({ todo }: { todo: TodoProps }) => {
   };
 
   const handleDrag = useCallback(() => {
-    setDraggedTodo(todo.id);
+    setDraggedTodo(task._id);
     console.log(draggedTodo);
-  }, [setDraggedTodo, todo.id]);
+  }, [setDraggedTodo, task._id]);
 
   return (
     <div
       className={`flex flex-col w-full mb-2 bg-gray-850 p-1 border-2 border-gray-700 rounded-md  shadow-md text-gray-100 hover:border-gray-400 hover:bg-gray-450 overflow-hidden  `}
-      key={todo.id}
+      key={task._id}
       draggable
       onDragStart={handleDrag}
     >
       <div className="title flex items-center justify-between">
         <TextareaAutosize
-          name="text"
+          name="taskName"
           ref={inputRef}
           className={` input ${max ? "  outline-red-600" : ""} overflow-hidden`}
           value={newText}
@@ -68,9 +68,9 @@ const Todo = ({ todo }: { todo: TodoProps }) => {
         handleConfirm={handleConfirm}
         handleCancel={handleCancel}
         handleEdit={handleEdit}
-        id={todo.id}
+        _id={task._id}
         isEditing={isEditing}
-        btnFunction="todo"
+        btnFunction="task"
       />
     </div>
   );

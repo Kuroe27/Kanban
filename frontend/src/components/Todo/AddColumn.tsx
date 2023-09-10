@@ -2,15 +2,16 @@ import { ChangeEvent, useEffect, useState } from "react";
 import useStore from "../../store";
 import Notice from "../Icons/Notice";
 import { AiOutlinePlus } from "react-icons/ai";
+import statusSlice from "../../services/auth/statusSlice";
 
 const AddColumn = () => {
-  const { createStatus, status, setEditStatus, editStatus } = useStore();
+  const { status, setEditStatus, editStatus } = useStore();
   const [statusName, setStatusName] = useState("");
-
+  const createStatus = statusSlice.createStatusMutation();
   const handleCreateStatus = () => {
     if (statusName.trim() === "") return;
     if (!editStatus.showNotice) {
-      createStatus(statusName);
+      createStatus.mutateAsync({ statusName });
     } else {
       setEditStatus({
         showSpan: true,
@@ -62,7 +63,7 @@ const AddColumn = () => {
             onChange={(e) => handleChange(e)}
             onBlur={handleBlur}
             value={statusName}
-            placeholder="Enter a new todo"
+            placeholder="Enter a new task"
             className="input"
           />
           {editStatus.id === "Add Column" ? <Notice /> : null}

@@ -1,37 +1,50 @@
 import { useRef, useState } from "react";
 import { BsFillExclamationTriangleFill } from "react-icons/bs";
-import useStore from "../../store";
-
-const AddTodo = () => {
-  const { addTodo } = useStore();
+import taskSlice from "../../services/auth/taskSlice";
+import { TaskProps } from "../../store";
+const AddTodo = ({ status }: TaskProps) => {
   const [isActive, setIsActive] = useState(false);
   const [max, setMax] = useState(false);
-  const [newTodo, setNewTodo] = useState("");
+  const [newTodo, setNewTodo] = useState({
+    taskName: "",
+    status: status,
+  });
 
+  const addTask = taskSlice.createTaskMutation();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const createBtn = useRef<HTMLButtonElement>(null);
 
-  const handleInputChange = (event: { target: { value: string } }) => {
-    const text = event.target.value;
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const taskName = event.target.value;
 
-    if (text.length <= 255) {
-      setNewTodo(text);
+    if (taskName.length <= 255) {
+      setNewTodo({
+        ...newTodo,
+        taskName,
+      });
       setMax(false);
     } else {
-      setNewTodo(text.slice(0, 255));
+      setNewTodo({
+        ...newTodo,
+        taskName: taskName.slice(0, 255),
+      });
       setMax(true);
     }
   };
 
   const handleCancel = () => {
     setIsActive(false);
-    setNewTodo("");
+    setNewTodo({
+      ...newTodo,
+      taskName: "",
+    });
     setMax(false);
   };
 
   const handleCreateTodo = () => {
-    if (newTodo.trim() === "") return;
-    addTodo(newTodo.trim());
+    if (newTodo.taskName.trim() === "") return;
+    addTask.mutateAsync(newTodo);
+    console.log(newTodo);
     setTimeout(() => {
       createBtn.current?.scrollIntoView({
         behavior: "smooth",
@@ -59,10 +72,10 @@ const AddTodo = () => {
         <div className="mb-2 p-2 text-gray-100 flex flex-col rounded-lg shadow-md border-2 border-gray-700">
           <textarea
             ref={textareaRef}
-            value={newTodo}
+            value={newTodo.taskName}
             onChange={handleInputChange}
             onFocus={() => setMax(false)}
-            placeholder="Enter a new todo"
+            placeholder="Enter a new task"
             className={`input  ${
               max
                 ? "border-2 border-red-500 outline-red-600"
