@@ -6,6 +6,7 @@ import Notice from "../Icons/Notice";
 import AddTodo from "./AddTodo";
 import Todo from "./Todo";
 import statusSlice from "../../services/auth/statusSlice";
+import taskSlice from "../../services/auth/taskSlice";
 
 interface Status {
   _id: string;
@@ -29,6 +30,7 @@ function Column({
 }) {
   const [newStatus, setNewStatus] = useState(status.statusName);
   const [isEditing, setIsEditing] = useState(false);
+  const updateTodos = taskSlice.updatedTaskMutation();
 
   const taskDatas = taskIsLoading
     ? []
@@ -49,7 +51,6 @@ function Column({
       return;
     }
   };
-
   // cancel edit/update
   const handleCancel = () => {
     setNewStatus(status.statusName);
@@ -84,8 +85,12 @@ function Column({
       onDrop={(_e) => {
         if (draggedTodo !== null) {
         }
-        setDraggedTodo(null);
-        console.log(draggedTodo);
+        updateTodos.mutateAsync({ status: status._id });
+        const updatedDraggedTodo = {
+          ...draggedTodo,
+          status: status._id,
+        };
+        setDraggedTodo(updatedDraggedTodo);
       }}
     >
       <div className="title flex items-center justify-between">

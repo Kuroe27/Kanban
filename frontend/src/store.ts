@@ -4,9 +4,9 @@ const userRaw = localStorage.getItem("user");
 const user = userRaw !== null ? JSON.parse(userRaw) : null;
 
 export type TaskProps = {
-  _id: string;
-  taskName: string;
-  status: string;
+  _id?: string;
+  taskName?: string;
+  status?: string;
 };
 
 export type StatusProps = {
@@ -35,7 +35,7 @@ type Actions = {
   setUser: (user: AuthProps) => void;
   logoutUser: () => void;
   updateTodo: (id: string, newText: string) => void;
-  setDraggedTodo: (id: string | null) => void;
+  setDraggedTodo: (id: TaskProps) => void;
   openModal: (modal: ModalProps) => void;
   setStatus: (status: StatusProps) => void;
   setTask: (task: TaskProps) => void;
@@ -48,7 +48,7 @@ type tasktore = {
   status: StatusProps[] | [];
   modal: ModalProps;
   editStatus: EditStatusProps;
-  draggedTodo: null | string;
+  draggedTodo: TaskProps | null;
 };
 
 const useStore = create<tasktore & Actions>()(

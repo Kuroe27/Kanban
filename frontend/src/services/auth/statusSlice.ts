@@ -97,7 +97,9 @@ const updatedStatusMutation = () => {
         "status",
         editStatus.id,
       ]);
+
       queryClient.setQueryData(["status", editStatus.id], statusName);
+
       return { prevStatus, statusName };
     },
     onError: (context: any) => {
