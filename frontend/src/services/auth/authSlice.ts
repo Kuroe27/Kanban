@@ -1,3 +1,4 @@
+// Import necessary dependencies and libraries
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -5,11 +6,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useStore from "../../store";
 
+// Define the API URL based on the environment
 const API_URL =
   import.meta.env.VITE_ENV !== "development"
     ? "https://www.api.kanbanflow.tech/api/users"
     : "http://localhost:3000/api/users";
 
+// Define TypeScript interfaces for user-related data
 interface User {
   email: string;
   password: string;
@@ -26,6 +29,7 @@ interface Password {
   newPassword: string;
 }
 
+// Function to handle API errors and display toast messages
 export const handleApiError = (error: any) => {
   const message =
     (error.response && error.response.data && error.response.data.message) ||
@@ -35,12 +39,14 @@ export const handleApiError = (error: any) => {
   throw error;
 };
 
+// Function to send HTTP requests using Axios
 export const sendHttpRequest = async (
   method: string,
   url: string,
   data?: any
 ) => {
   try {
+    // Simulate a delay for testing purposes
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const res = await axios({ method, url, data, withCredentials: true });
     return res.data;
@@ -49,6 +55,7 @@ export const sendHttpRequest = async (
   }
 };
 
+// Define a mutation for user login
 const loginMutation = () => {
   const { setUser } = useStore();
   const navigate = useNavigate();
@@ -67,6 +74,7 @@ const loginMutation = () => {
   });
 };
 
+// Define a mutation for user signup
 const signupMutation = () => {
   const { setUser } = useStore();
   const navigate = useNavigate();
@@ -86,6 +94,7 @@ const signupMutation = () => {
   });
 };
 
+// Define a mutation for user logout
 const logoutMutation = () => {
   const { logoutUser } = useStore();
   const navigate = useNavigate();
@@ -104,6 +113,7 @@ const logoutMutation = () => {
   });
 };
 
+// Define a mutation for updating user data
 const UpdateMutation = () => {
   const { setUser } = useStore();
 
@@ -124,6 +134,7 @@ const UpdateMutation = () => {
   });
 };
 
+// Define a mutation for updating user password
 const UpdatePasswordMutation = () => {
   return useMutation({
     mutationFn: async (password: Password) => {
@@ -136,11 +147,21 @@ const UpdatePasswordMutation = () => {
     },
   });
 };
+const DeleteMutation = () => {
+  return useMutation({
+    mutationFn: async () => {
+      const resData = await sendHttpRequest("delete", `${API_URL}/user`, null);
+      toast(resData.message);
+    },
+  });
+};
 
+// Export all the mutations as an object
 export default {
   loginMutation,
   signupMutation,
   logoutMutation,
   UpdateMutation,
   UpdatePasswordMutation,
+  DeleteMutation,
 };

@@ -26,14 +26,14 @@ const Login = () => {
   };
 
   return (
-    <div className="">
-      <form className="  text-gray-300 p-10 text-center">
+    <div className=" h-[calc(100vh-4rem)] flex justify-center items-center">
+      <form className="  text-gray-300 p-10 text-center flex">
         <div className="flex flex-col justify-center items-center  ">
           <h1 className="text-3xl text-gray-50 my-5  font-semibold ">
             Login to KanbanFlow
           </h1>
 
-          <div className="div max-w-[320px] mb-52">
+          <div className="div max-w-[320px]">
             <input
               type="text"
               className=" bg-gray-800 border-2 border-gray-200 text-1xl p-2 rounded-md mb-2 w-full placeholder-text-xl"

@@ -1,46 +1,52 @@
-import { ChangeEvent, useRef, useState, useCallback } from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import useStore from "../../store";
-import Buttons from "../Buttons/Buttons";
-import { TaskProps } from "../../store";
 import taskSlice from "../../services/auth/taskSlice";
+import useStore, { TaskProps } from "../../store";
+import Buttons from "../Buttons/Buttons";
 
 const Todo = ({ task }: { task: TaskProps }) => {
   const { setDraggedTodo, draggedTodo } = useStore();
-  const [newText, setNewText] = useState<string | undefined>(task.taskName);
+  const updateTodos = taskSlice.updatedTaskMutation();
 
+  const [newText, setNewText] = useState<string | undefined>(task.taskName);
   const [isEditing, setIsEditing] = useState(false);
   const [max, setMax] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const updateTodos = taskSlice.updatedTaskMutation();
-  const handleEdit = () => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  };
+
+  //update the dragged todo taskname
   const updatedDraggedTodo = {
     ...draggedTodo,
     _id: task._id,
     taskName: newText,
   };
-  const handleConfirm = () => {
-    setDraggedTodo(updatedDraggedTodo);
 
+  const handleEdit = () => {
+    //handle edit icon click, if clicked focus to the textbox
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  const handleConfirm = () => {
+    //handle edit icon click, if clicked send request to update the task
+    setDraggedTodo(updatedDraggedTodo);
     updateTodos.mutateAsync(updatedDraggedTodo);
   };
 
   const handleBlur = () => {
+    //handle blur, if textbox is not onfoucst send request to update the task
     setIsEditing(false);
-    // updateTodos.mutateAsync({ taskId: task._id, taskName: newText });
     setDraggedTodo(updatedDraggedTodo);
     updateTodos.mutateAsync(updatedDraggedTodo);
   };
 
   const handleCancel = () => {
+    //set the previous task name to the textbox
     setNewText(task.taskName);
   };
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    //if the text length is greater or equal to 255 the set the max on and display red border
     if (e.target.value.length <= 255) {
       setNewText(e.target.value);
       setMax(false);
@@ -52,7 +58,6 @@ const Todo = ({ task }: { task: TaskProps }) => {
 
   const handleDrag = useCallback(() => {
     setDraggedTodo(task);
-    // console.log(draggedTodo);
   }, [setDraggedTodo, task._id]);
 
   return (
@@ -73,7 +78,6 @@ const Todo = ({ task }: { task: TaskProps }) => {
           onBlur={handleBlur}
         />
       </div>
-      <p>{task.status}</p>
 
       <Buttons
         handleConfirm={handleConfirm}
