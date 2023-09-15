@@ -48,17 +48,22 @@ const Navigation = () => {
           ></div>
           {isPopoverOpen && (
             <div className="absolute   z-10 top-full right-5 mt-2 w-60 bg-gray-900 border border-gray-600 rounded shadow-lg text-gray-400">
-              {/* <p className="px-3  ">{auth.email}</p> */}
               <div className="py-2 ">
                 <button
                   className="hover:text-gray-100 hover:bg-gray-500 text-start w-full p-2 px-3"
-                  onClick={() => navigate("/account")}
+                  onClick={() => {
+                    setIsPopoverOpen(false);
+                    navigate("/account");
+                  }}
                 >
                   Settings
                 </button>
                 <button
                   className="hover:text-gray-100 hover:bg-gray-500 text-start w-full p-2 px-3"
-                  onClick={() => logoutMutation.mutateAsync()}
+                  onClick={() => {
+                    setIsPopoverOpen(false);
+                    logoutMutation.mutateAsync();
+                  }}
                 >
                   Logout
                 </button>
