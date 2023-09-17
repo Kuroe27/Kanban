@@ -3,6 +3,9 @@
 
 This is a starter app for KanbanFlow, a project management tool built with a MERN stack (MongoDB, Express, React, Node.js). It includes authentication features to help you get started with a Single Page Application (SPA) workflow.
 
+![www canva com_design_DAFur3Vk4FI_lITElq2Ckd4iSz_qhaTgiQ_view_mode=prototype](https://github.com/Kuroe27/Kanban/assets/105025585/9e2f4b73-ba7c-40af-97e7-e20347567ee6)
+
+
 ## Features
 
 This starter app includes the following features:
