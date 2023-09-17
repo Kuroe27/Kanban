@@ -1,5 +1,5 @@
 
-# KanbanFlow Authentication Starter
+# KanbanFlow
 
 This is a starter app for KanbanFlow, a project management tool built with a MERN stack (MongoDB, Express, React, Node.js). It includes authentication features to help you get started with a Single Page Application (SPA) workflow.
 
