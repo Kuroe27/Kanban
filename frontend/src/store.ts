@@ -7,6 +7,8 @@ export type TaskProps = {
   _id?: string;
   taskName?: string;
   status?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type StatusProps = {
@@ -40,6 +42,8 @@ type Actions = {
   setStatus: (status: StatusProps) => void;
   setTask: (task: TaskProps) => void;
   setEditStatus: (editStatus: EditStatusProps) => void;
+  setBg: (condition: boolean) => void;
+  setSearchQuery: (query: string) => void;
 };
 
 type tasktore = {
@@ -49,6 +53,8 @@ type tasktore = {
   modal: ModalProps;
   editStatus: EditStatusProps;
   draggedTodo: TaskProps | null;
+  Bg: Boolean;
+  searchQuery: string;
 };
 
 const useStore = create<tasktore & Actions>()(
@@ -67,6 +73,8 @@ const useStore = create<tasktore & Actions>()(
       showNotice: false,
       showSpan: false,
     },
+    Bg: false,
+    searchQuery: "",
     setUser: (user) => {
       set((state) => ({
         auth: {
@@ -126,6 +134,12 @@ const useStore = create<tasktore & Actions>()(
         false,
         "edit"
       );
+    },
+    setBg: (condition) => {
+      set({ Bg: condition });
+    },
+    setSearchQuery: (query) => {
+      set({ searchQuery: query });
     },
   }))
 );

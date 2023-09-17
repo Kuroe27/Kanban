@@ -1,6 +1,4 @@
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import Account from "./Settings/Account";
-import ChangePass from "./Settings/ChangePass";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const ListItem = ({ label, to }: { label: string; to: string }) => {
   const location = useLocation();
@@ -32,10 +30,7 @@ const Settings = () => {
         </ul>
       </section>
       <main className="w-3/4 ">
-        <Routes>
-          <Route path="/" element={<Account />} />
-          <Route path="/password" element={<ChangePass />} />
-        </Routes>
+        <Outlet />
       </main>
     </div>
   );

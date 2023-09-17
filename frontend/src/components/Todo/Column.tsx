@@ -31,11 +31,18 @@ function Column({
   const [newStatus, setNewStatus] = useState(status.statusName);
   const [isEditing, setIsEditing] = useState(false);
   const updateTodos = taskSlice.updatedTaskStatusMutation();
-
   //check first the task data if isLoading else filter out the data
   const taskDatas = taskIsLoading
     ? []
     : taskData.filter((task: TaskProps) => task.status === status._id);
+
+  const { searchQuery } = useStore();
+  // Filter the task data based on the search query
+  const filteredTaskDatas = taskIsLoading
+    ? []
+    : taskDatas.filter((task: TaskProps) =>
+        task.taskName.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
   // store
   const { draggedTodo, setDraggedTodo, setEditStatus, editStatus } = useStore();
@@ -135,12 +142,16 @@ function Column({
       {/* map thru task data and conditional render task base on its status  */}
       {taskIsLoading ? (
         <p>Loading</p>
-      ) : (
+      ) : searchQuery === null ? (
         taskDatas.map((task: TaskProps) => <Todo key={task._id} task={task} />)
+      ) : (
+        filteredTaskDatas.map((task: TaskProps) => (
+          <Todo key={task._id} task={task} />
+        ))
       )}
 
       {/* display add todo foreach column */}
-      <AddTodo status={status._id} />
+      {searchQuery === "" && <AddTodo status={status._id} />}
     </section>
   );
 }
